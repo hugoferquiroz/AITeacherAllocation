@@ -2,7 +2,7 @@
 """
 Created on Mon Mar 28 17:36:02 2022
 
-@author: USUARIO
+@author: Hugoferq y CarlosRV0803
 """
 
 #Importar librerías necesarias
@@ -30,3 +30,23 @@ df_siraweb_2019.to_csv(r'C:\Users\crami\OneDrive\Hugo - MINEDU\AI teacher alloca
 
 
 # Apliar las otras bases (2018-2020)
+
+
+
+# Diccionario
+    #Resultados de la evaluacion
+data_dictionary ={'doc_e':'Excedente - Numero de plazas de docente de aula',
+                  'doc_e_n': 'Excedente - Numero de plazas de docente de aula nombrado',
+                  'doc_e_c' : 'Excedente - Numero de plazas de docente de aula vacante o contratado',
+                  'doc_req': 'Requerimiento - Numero de plazas de docente de aula',
+                  'secciones_necesarias': 'Secciones necesarias',
+                  
+                  
+                  
+'', 'bolsa_s', 'bolsa_n', 'secciones_necesarias_2019
+
+# Crear un diccionario de manera eficiente
+    # Defino la lista de variables
+        # Tokens para asignar label a las variables
+        # 
+    # La lista de etiquetas
