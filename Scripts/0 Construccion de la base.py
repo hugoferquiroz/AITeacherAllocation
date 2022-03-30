@@ -10,44 +10,40 @@ import pandas as pd
 from pathlib import Path
 pd.options.mode.chained_assignment = None
 
-
 #Set de rutas
 work =  Path(r'D:\Trabajo\AITeacherAllocation')
 
-# def carga_resultados_sira(filename):
-#     siraweb = pd.read_excel(filename, sheet_name = 'Global', skiprows = 5)
-#     return siraweb
-
-# df_siraweb_2019 = carga_resultados_sira(work / r"Racio 2019.xlsx")
-
-# df_siraweb_2019 = df_siraweb_2019[['cod_mod', 'doc_e', 'doc_e_n', 'doc_e_c',
-#                                    'doc_req', 'bolsa_s', 'bolsa_n', 'nsecc_mod2']]
-# df_siraweb_2019.rename(columns={'nsecc_mod2':'secciones_necesarias_2019'},inplace=True)
-
-# print(df_siraweb_2019.columns.values.tolist())
-# df_siraweb_2019.to_csv(r'C:\Users\crami\OneDrive\Hugo - MINEDU\AI teacher allocation data\df_siraweb_2019.csv')
-
+def carga_resultados_sira(filename):
+    if filename.suffix == '.xlsx':
+        siraweb = pd.read_excel(filename, sheet_name = 'Global', skiprows = 5)
+    elif filename.suffix == '.dta':
+        siraweb = pd.read_stata(filename)
+    return siraweb
 
 racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
+padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
+
 # lista de las mastriculas
-all_columns = racio_2020.columns.values.tolist()
+all_columns = padron_gg1.columns.values.tolist()
 
 matricula = []
 for x in all_columns:
     if x.startswith('cant'):
         matricula.append(x)
 
+labels_matricula = []
+for i in matricula:
+    my_string = 'Matricula'
+    
+    if ('cant0' in i) and ('alum' in i) and i.endswith('2022') :
+        my_string = my_string + ' regular' + ' cuna' + '-2021 '
+        labels_matricula.append(my_string)
+    else:
+        labels_matricula.append('muermo')
+        
+        
 
-'', 'bolsa_s', 'bolsa_n', 'secciones_necesarias_2019
-cant0_alum_2015 
-cant0_inclusivo_2015 
-
-my_string = ''
-if '0' in 'cant0_alum_2015':
-    my_string = 'Inicial cuna'
-elif 'alum' in 'cant0_alum_2015'
-
-
+'bolsa_s', 'bolsa_n', 'secciones_necesarias_2019'
 
 # Crear un diccionario de manera eficiente
     # Defino la lista de variables (divide y venceras)
