@@ -31,17 +31,30 @@ for x in all_columns:
     if x.startswith('cant'):
         matricula.append(x)
 
-labels_matricula = []
-for i in matricula:
-    my_string = 'Matricula'
-    
-    if ('cant0' in i) and ('alum' in i) and i.endswith('2022') :
-        my_string = my_string + ' regular' + ' cuna' + '-2021 '
-        labels_matricula.append(my_string)
-    else:
-        labels_matricula.append('muermo')
-        
-        
+matricula_new = [ if x.startswith('cant_total_') matricula.remove(x) for x in matricula]
+
+
+# labels_matricula = []
+# for i in matricula:
+#     my_string = 'Matricula'
+#     for anio in [2015,2016,2017,2018,2019,2020,2021,2022]:
+#         if i == 'cant_inclusivo_{anio}': 
+#             my_string = my_string + ' inclusivo total' + f'-{anio}'
+#             labels_matricula.append(my_string)
+                
+#         elif i == 'cant_total_{anio}': 
+#             my_string = my_string + ' regular total' + f'-{anio}'
+#             labels_matricula.append(my_string)
+
+#         for grado in [0,1,2,3,4,5,6]:
+            
+#             if (f'cant{grado}' in i) and ('alum' in i) and i.endswith(f'{anio}'):
+#                 my_string = my_string + ' regular' + f' {grado} grado/año' + f'-{anio}'
+#                 labels_matricula.append(my_string)
+                
+#             elif (f'cant{grado}' in i) and ('inclusivo' in i) and i.endswith(f'{anio}'): 
+#                 my_string = my_string + ' inclusivo' + f' {grado} grado' + f'-{anio}'
+#                 labels_matricula.append(my_string)
 
 'bolsa_s', 'bolsa_n', 'secciones_necesarias_2019'
 
@@ -52,9 +65,7 @@ for i in matricula:
         # Tokens para asignar label a las variables
         # 
     # La lista de etiquetas
-
-
-
+    
 # Diccionario
     #Resultados de la evaluacion
 data_dictionary ={'doc_e':'Excedente - Numero de plazas de docente de aula',
