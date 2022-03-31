@@ -13,6 +13,7 @@ pd.options.mode.chained_assignment = None
 #Set de rutas
 work =  Path(r'D:\Trabajo\AITeacherAllocation')
 
+# Clean data
 def carga_resultados_sira(filename):
     if filename.suffix == '.xlsx':
         siraweb = pd.read_excel(filename, sheet_name = 'Global', skiprows = 5)
@@ -21,6 +22,21 @@ def carga_resultados_sira(filename):
     return siraweb
 
 racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
+
+
+all_columns = racio_2020.columns.values.tolist()
+all_columns
+
+
+
+racio_2020['niv_mod'].value_counts()
+racio_2020[racio_2020['niv_mod']!='A2']
+
+
+str.find('niv_mod')
+
+
+
 padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
 
 # lista de las mastriculas
