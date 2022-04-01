@@ -36,7 +36,6 @@ racio_2020[racio_2020['niv_mod']!='A2']
 str.find('niv_mod')
 
 
-
 padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
 
 # lista de las mastriculas
