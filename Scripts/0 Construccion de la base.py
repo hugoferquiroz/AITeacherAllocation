@@ -28,7 +28,6 @@ all_columns = racio_2020.columns.values.tolist()
 all_columns
 
 
-
 racio_2020['niv_mod'].value_counts()
 racio_2020[racio_2020['niv_mod']!='A2']
 
