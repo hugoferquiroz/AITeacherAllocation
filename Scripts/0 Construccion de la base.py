@@ -75,11 +75,10 @@ for i in matricula_new:
 
 # Crear un diccionario de manera eficiente
     # Defino la lista de variables (divide y venceras)
-        # 
+        # Matricula (x)
+        # Docentes ()
+        # Identificacion ()
         
-        # Tokens para asignar label a las variables
-        # 
-    # La lista de etiquetas
     
 # Diccionario
     #Resultados de la evaluacion
