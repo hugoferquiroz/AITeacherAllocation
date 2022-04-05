@@ -10,10 +10,10 @@ import pandas as pd
 from pathlib import Path
 pd.options.mode.chained_assignment = None
 
-#Set de rutas
+#Set files path
 work =  Path(r'D:\Trabajo\AITeacherAllocation')
 
-# Clean data
+# Import data
 def carga_resultados_sira(filename):
     if filename.suffix == '.xlsx':
         siraweb = pd.read_excel(filename, sheet_name = 'Global', skiprows = 5)
@@ -21,23 +21,16 @@ def carga_resultados_sira(filename):
         siraweb = pd.read_stata(filename)
     return siraweb
 
+
 racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
-
-
 all_columns = racio_2020.columns.values.tolist()
 all_columns
-
 
 racio_2020['niv_mod'].value_counts()
 racio_2020[racio_2020['niv_mod']!='A2']
 
-
-str.find('niv_mod')
-
-
+# Build a data dictionary
 padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
-
-# lista de las mastriculas
 all_columns = padron_gg1.columns.values.tolist()
 
 matricula = []
@@ -69,9 +62,14 @@ for i in matricula_new:
                 my_string = my_string + ' inclusivo' + f' {grado} grado/año' + f'-{anio}'
                 labels_matricula.append(my_string)
 
+dict_matricula = dict(zip(matricula_new, labels_matricula))
+matricula_dd = pd.DataFrame(dict_matricula.items(), columns=['Variable', 'Etiqueta'] )
 
 
 'bolsa_s', 'bolsa_n', 'secciones_necesarias_2019'
+
+
+
 
 # Crear un diccionario de manera eficiente
     # Defino la lista de variables (divide y venceras)
