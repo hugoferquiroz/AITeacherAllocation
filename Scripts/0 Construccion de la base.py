@@ -22,12 +22,12 @@ def carga_resultados_sira(filename):
     return siraweb
 
 
-racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
-all_columns = racio_2020.columns.values.tolist()
+racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
+all_columns = racio_2021.columns.values.tolist()
 all_columns
 
-racio_2020['niv_mod'].value_counts()
-racio_2020[racio_2020['niv_mod']!='A2']
+racio_2021['niv_mod'].value_counts()
+racio_2021[racio_2021['niv_mod']!='A2']
 
 # Build a data dictionary
 padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
@@ -80,8 +80,8 @@ matricula_dd = pd.DataFrame(dict_matricula.items(), columns=['Variable', 'Etique
     
 # Diccionario
     #Resultados de la evaluacion
-data_dictionary ={'doc_e':'Excedente - Numero de plazas de docente de aula',
-                  'doc_e_n': 'Excedente - Numero de plazas de docente de aula nombrado',
-                  'doc_e_c' : 'Excedente - Numero de plazas de docente de aula vacante o contratado',
-                  'doc_req': 'Requerimiento - Numero de plazas de docente de aula',
-                  'secciones_necesarias': 'Secciones necesarias',
+# data_dictionary ={'doc_e':'Excedente - Numero de plazas de docente de aula',
+#                   'doc_e_n': 'Excedente - Numero de plazas de docente de aula nombrado',
+#                   'doc_e_c' : 'Excedente - Numero de plazas de docente de aula vacante o contratado',
+#                   'doc_req': 'Requerimiento - Numero de plazas de docente de aula',
+#                   'secciones_necesarias': 'Secciones necesarias',
