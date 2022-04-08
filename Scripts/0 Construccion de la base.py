@@ -5,7 +5,7 @@ Created on Mon Mar 28 17:36:02 2022
 @author: Hugoferq y CarlosRV0803
 """
 
-#Importar librerías necesarias
+#Import libraries
 import pandas as pd
 from pathlib import Path
 pd.options.mode.chained_assignment = None
@@ -22,26 +22,78 @@ def carga_resultados_sira(filename):
     return siraweb
 
 
-racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
+racio_2019 = pd.read_stata(work/r'Raw Data\Racio 2019.dta')
+racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
+racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2021.dta')
+
+#Variables a usar
+identifcacion = ['cod_mod']
+#Variables relevantes
+    #Datos de identificacion (salen del padron gg1)
+    #PEA evaluada
+
+
+
+    #Matricula 
+    #Datos de la evaluacion (quien evalua)
+    #Resultados
+    
+for i in [racio_2019,racio_2020,racio_2021]:
+    print('jec_2019' in i)
+    # print(i['nivel'].isnull().sum())
+
+
+#2019
+#gdir_no  gdir_co  gsdir_no  gsdir_co  dir_no  dir_co  jer_no  jer_co  doc_no
+
+#2020/2021
+#dir_des_org        dir_enc_org         dir_vac_org
+#dir_des_ev	        dir_enc_ev	        dir_vac_ev	
+#sub_dir_des_org    sub_dir_enc_org	    sub_dir_vac_org
+#sub_dir_des_ev	    sub_dir_enc_ev	    sub_dir_vac_ev	
+#jer_con_org	    jer_nom_org	        jer_vac_org
+#jer_con_ev	        jer_nom_ev	        jer_vac_ev	
+#doc_nom_org	    doc_con_org	        doc_vac_org	
+#doc_nom_ev	        doc_con_ev	        doc_vac_ev	
+#otro_doc_nom_org	otro_doc_con_org	otro_doc_vac_org
+#otro_doc_nom_ev	otro_doc_con_ev	    otro_doc_vac_ev	
+#aux_nom_org	    aux_con_org	        aux_vac_org
+#aux_nom_ev	        aux_con_ev	        aux_vac_ev
+
+racio_2020['dir_nom'] = racio_2020['dir_des_org']+racio_2020['dir_des_ev']
+racio_2020['dir_vac'] = racio_2020['dir_des_ev']+racio_2020['dir_enc_ev']+racio_2020['dir_vac_ev'] 
+
+for cargo in ['dir','sub_dir']:
+    racio_2020[f'{cargo}_nom'] = racio_2020[f'{cargo}_des_org']+racio_2020[f'{cargo}_des_ev']
+    racio_2020[f'{cargo}_vac'] = racio_2020[f'{cargo}_des_ev']+racio_2020[f'{cargo}_enc_ev']+racio_2020[f'{cargo}_vac_ev']
+	
+for cargo in ['jer','doc','otro_doc','aux']:
+    racio_2020[f'{cargo}_nom']=racio_2020[f'{cargo}_nom_org']+racio_2020[f'{cargo}_nom_ev']
+    racio_2020[f'{cargo}_vac']=racio_2020[f'{cargo}_con_org']+racio_2020[f'{cargo}_con_ev']+racio_2020[f'{cargo}_vac_org']+racio_2020[f'{cargo}_vac_ev']
+
+
 all_columns = racio_2021.columns.values.tolist()
 all_columns
+
+'nivel' in all_columns
+racio_2021['nivel'].value_counts()
 
 racio_2021['niv_mod'].value_counts()
 racio_2021[racio_2021['niv_mod']!='A2']
 
+
+
 # Build a data dictionary
 padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
 all_columns = padron_gg1.columns.values.tolist()
-
 matricula = []
 for x in all_columns:
     if x.startswith('cant'):
         matricula.append(x)
-
-matricula_new = [ x for x in matricula if not x.startswith('cant_total_') and not x.startswith('cant_inclusivo')]
-
+        
+matricula_short = [ x for x in matricula if not x.startswith('cant_total_') and not x.startswith('cant_inclusivo')]
 labels_matricula = []
-for i in matricula_new:
+for i in matricula_short :
     my_string = 'Matricula'
     for anio in [2015,2016,2017,2018,2019,2020,2021,2022]:
         if i == 'cant_inclusivo_{anio}': 
@@ -62,11 +114,11 @@ for i in matricula_new:
                 my_string = my_string + ' inclusivo' + f' {grado} grado/año' + f'-{anio}'
                 labels_matricula.append(my_string)
 
-dict_matricula = dict(zip(matricula_new, labels_matricula))
+dict_matricula = dict(zip(matricula_short , labels_matricula))
 matricula_dd = pd.DataFrame(dict_matricula.items(), columns=['Variable', 'Etiqueta'] )
 
 
-'bolsa_s', 'bolsa_n', 'secciones_necesarias_2019'
+# 'bolsa_s', 'bolsa_n', 'secciones_necesarias_2019'
 
 
 
