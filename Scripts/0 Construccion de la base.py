@@ -29,40 +29,12 @@ racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2021.dta')
 #Variables a usar
 identifcacion = ['cod_mod']
 #Variables relevantes
+all_columns = racio_2021.columns.values.tolist()
     #Datos de identificacion (salen del padron gg1)
-    #PEA evaluada
-
-
-
-    #Matricula 
-    #Datos de la evaluacion (quien evalua)
-    #Resultados
     
-for i in [racio_2019,racio_2020,racio_2021]:
-    print('jec_2019' in i)
-    # print(i['nivel'].isnull().sum())
-
-
-#2019
-#gdir_no  gdir_co  gsdir_no  gsdir_co  dir_no  dir_co  jer_no  jer_co  doc_no
-
-#2020/2021
-#dir_des_org        dir_enc_org         dir_vac_org
-#dir_des_ev	        dir_enc_ev	        dir_vac_ev	
-#sub_dir_des_org    sub_dir_enc_org	    sub_dir_vac_org
-#sub_dir_des_ev	    sub_dir_enc_ev	    sub_dir_vac_ev	
-#jer_con_org	    jer_nom_org	        jer_vac_org
-#jer_con_ev	        jer_nom_ev	        jer_vac_ev	
-#doc_nom_org	    doc_con_org	        doc_vac_org	
-#doc_nom_ev	        doc_con_ev	        doc_vac_ev	
-#otro_doc_nom_org	otro_doc_con_org	otro_doc_vac_org
-#otro_doc_nom_ev	otro_doc_con_ev	    otro_doc_vac_ev	
-#aux_nom_org	    aux_con_org	        aux_vac_org
-#aux_nom_ev	        aux_con_ev	        aux_vac_ev
-
-racio_2020['dir_nom'] = racio_2020['dir_des_org']+racio_2020['dir_des_ev']
-racio_2020['dir_vac'] = racio_2020['dir_des_ev']+racio_2020['dir_enc_ev']+racio_2020['dir_vac_ev'] 
-
+    
+    
+    #PEA evaluada
 for cargo in ['dir','sub_dir']:
     racio_2020[f'{cargo}_nom'] = racio_2020[f'{cargo}_des_org']+racio_2020[f'{cargo}_des_ev']
     racio_2020[f'{cargo}_vac'] = racio_2020[f'{cargo}_des_ev']+racio_2020[f'{cargo}_enc_ev']+racio_2020[f'{cargo}_vac_ev']
@@ -71,15 +43,33 @@ for cargo in ['jer','doc','otro_doc','aux']:
     racio_2020[f'{cargo}_nom']=racio_2020[f'{cargo}_nom_org']+racio_2020[f'{cargo}_nom_ev']
     racio_2020[f'{cargo}_vac']=racio_2020[f'{cargo}_con_org']+racio_2020[f'{cargo}_con_ev']+racio_2020[f'{cargo}_vac_org']+racio_2020[f'{cargo}_vac_ev']
 
+    #Matricula 
+    matricula_all = []
+    for x in all_columns:
+        if x.startswith('cant'):
+            matricula_all.append(x)
+    matricula_evaluacion = [x for x in matricula_all if not x.startswith('cant_total_') and not 
+                 x.startswith('cant_inclusivo') and not x.find('cant_alum_')!=-1 and not
+                 x.find('bolsa_horas')!=-1 ]
+    
+    
+    
+    #Datos de la evaluacion (quien evalua)
+    evaluacion = ['usu']
+    #Resultados
+    
+   
 
-all_columns = racio_2021.columns.values.tolist()
-all_columns
-
-'nivel' in all_columns
+'usuario_minedu' in all_columns
 racio_2021['nivel'].value_counts()
 
 racio_2021['niv_mod'].value_counts()
 racio_2021[racio_2021['niv_mod']!='A2']
+
+for i in [racio_2019,racio_2020,racio_2021]:
+    print('jec_2019' in i)
+    # print(i['nivel'].isnull().sum())
+
 
 
 
