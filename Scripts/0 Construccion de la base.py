@@ -55,7 +55,7 @@ for cargo in ['jer','doc','otro_doc','aux']:
     
     
     #Datos de la evaluacion (quien evalua)
-    evaluacion = ['usu']
+    evaluacion = ['usuario_minedu',]
     #Resultados
     
    
