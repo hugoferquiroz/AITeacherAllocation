@@ -55,10 +55,15 @@ for cargo in ['jer','doc','otro_doc','aux']:
     
     
     #Datos de la evaluacion (quien evalua)
-    evaluacion = ['usuario_minedu',]
+    evaluacion = ['usuario_minedu']
     #Resultados
+    resultado_racio = ['bolsa_horas']
+    requerimientos = [x for x in all_columns if x.startswith('req')]
+    excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith('2021') and not x.find('tot_')!=-1 ]
+       
     
-   
+
+
 
 'usuario_minedu' in all_columns
 racio_2021['nivel'].value_counts()
