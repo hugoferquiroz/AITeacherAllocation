@@ -44,24 +44,27 @@ for cargo in ['jer','doc','otro_doc','aux']:
     racio_2020[f'{cargo}_vac']=racio_2020[f'{cargo}_con_org']+racio_2020[f'{cargo}_con_ev']+racio_2020[f'{cargo}_vac_org']+racio_2020[f'{cargo}_vac_ev']
 
     #Matricula 
-    matricula_all = []
-    for x in all_columns:
-        if x.startswith('cant'):
-            matricula_all.append(x)
-    matricula_evaluacion = [x for x in matricula_all if not x.startswith('cant_total_') and not 
+    matricula_evaluacion = [ x for x in all_columns if x.startswith('cant') and not x.startswith('cant_total_') and not 
                  x.startswith('cant_inclusivo') and not x.find('cant_alum_')!=-1 and not
                  x.find('bolsa_horas')!=-1 ]
+  
     
     
-    
-    #Datos de la evaluacion (quien evalua)
-    evaluacion = ['usuario_minedu']
+    #Datos de la evaluacion
+    datos_evaluacion = ['usuario_minedu','bolsa_horas']
     #Resultados
-    resultado_racio = ['bolsa_horas']
     requerimientos = [x for x in all_columns if x.startswith('req')]
     excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith('2021') and not x.find('tot_')!=-1 ]
        
     
+
+matricula_uwu = [ x for x in all_columns if x.startswith('cant') and not x.startswith('cant_total_') and not 
+             x.startswith('cant_inclusivo') and not x.find('cant_alum_')!=-1 and not
+             x.find('bolsa_horas')!=-1 ]
+
+
+
+matricula_uwu == matricula_evaluacion
 
 
 
