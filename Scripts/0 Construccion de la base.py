@@ -27,13 +27,10 @@ racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
 racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2021.dta')
 
 #Variables a usar
-identifcacion = ['cod_mod']
-#Variables relevantes
-all_columns = racio_2021.columns.values.tolist()
+all_columns = racio_2020.columns.values.tolist()
     #Datos de identificacion (salen del padron gg1)
-    
-    
-    
+identificacion = ['cod_mod'] 
+
     #PEA evaluada
 for cargo in ['dir','sub_dir']:
     racio_2020[f'{cargo}_nom'] = racio_2020[f'{cargo}_des_org']+racio_2020[f'{cargo}_des_ev']
@@ -43,29 +40,30 @@ for cargo in ['jer','doc','otro_doc','aux']:
     racio_2020[f'{cargo}_nom']=racio_2020[f'{cargo}_nom_org']+racio_2020[f'{cargo}_nom_ev']
     racio_2020[f'{cargo}_vac']=racio_2020[f'{cargo}_con_org']+racio_2020[f'{cargo}_con_ev']+racio_2020[f'{cargo}_vac_org']+racio_2020[f'{cargo}_vac_ev']
 
+pea_evaluada = []
+
     #Matricula 
-    matricula_evaluacion = [ x for x in all_columns if x.startswith('cant') and not x.startswith('cant_total_') and not 
+matricula_evaluacion = [ x for x in all_columns if x.startswith('cant') and not x.startswith('cant_total_') and not 
                  x.startswith('cant_inclusivo') and not x.find('cant_alum_')!=-1 and not
                  x.find('bolsa_horas')!=-1 ]
-  
-    
     
     #Datos de la evaluacion
-    datos_evaluacion = ['usuario_minedu','bolsa_horas']
+datos_evaluacion = ['usuario_minedu','bolsa_nexus','bolsa_sira']
     #Resultados
-    requerimientos = [x for x in all_columns if x.startswith('req')]
-    excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith('2021') and not x.find('tot_')!=-1 ]
+requerimientos = [x for x in all_columns if x.startswith('req') and not x.find('req_exd')!=-1]
+excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith('2020') and not x.find('tot_')!=-1 ]
        
     
+for i in excedentes:
+    print(i in racio_2021)
+    
+    
+for x in all_columns:
+    if x.find('usuario')!=-1:
+        print(f'{x}')
 
-matricula_uwu = [ x for x in all_columns if x.startswith('cant') and not x.startswith('cant_total_') and not 
-             x.startswith('cant_inclusivo') and not x.find('cant_alum_')!=-1 and not
-             x.find('bolsa_horas')!=-1 ]
-
-
-
-matricula_uwu == matricula_evaluacion
-
+racio_2021[['bolsa_horas','cant_bolsa_horas','bolsa_sira']]
+racio_2021['bolsa_horas']==racio_2021['cant_bolsa_horas'] 
 
 
 'usuario_minedu' in all_columns
@@ -76,7 +74,6 @@ racio_2021[racio_2021['niv_mod']!='A2']
 
 for i in [racio_2019,racio_2020,racio_2021]:
     print('jec_2019' in i)
-    # print(i['nivel'].isnull().sum())
 
 
 
