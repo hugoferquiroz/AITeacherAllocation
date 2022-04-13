@@ -41,6 +41,9 @@ for cargo in ['jer','doc','otro_doc','aux']:
     racio_2020[f'{cargo}_vac']=racio_2020[f'{cargo}_con_org']+racio_2020[f'{cargo}_con_ev']+racio_2020[f'{cargo}_vac_org']+racio_2020[f'{cargo}_vac_ev']
 
 pea_evaluada = []
+for cargo in ['dir','sub_dir','jer','doc','otro_doc','aux']:
+    for sit in ['nom','vac']:
+        pea_evaluada.append(f'{cargo}_{sit}')
 
     #Matricula 
 matricula_evaluacion = [ x for x in all_columns if x.startswith('cant') and not x.startswith('cant_total_') and not 
@@ -53,17 +56,20 @@ datos_evaluacion = ['usuario_minedu','bolsa_nexus','bolsa_sira']
 requerimientos = [x for x in all_columns if x.startswith('req') and not x.find('req_exd')!=-1]
 excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith('2020') and not x.find('tot_')!=-1 ]
        
+  
     
-for i in excedentes:
-    print(i in racio_2021)
+muermo = racio_2020[identificacion+pea_evaluada+matricula_evaluacion+
+                    datos_evaluacion+requerimientos+excedentes]
+    
+muermo.describe 
+ 
+for i in matricula_evaluacion:
+    print(i in racio_2020)
     
     
 for x in all_columns:
     if x.find('usuario')!=-1:
         print(f'{x}')
-
-racio_2021[['bolsa_horas','cant_bolsa_horas','bolsa_sira']]
-racio_2021['bolsa_horas']==racio_2021['cant_bolsa_horas'] 
 
 
 'usuario_minedu' in all_columns
@@ -74,6 +80,9 @@ racio_2021[racio_2021['niv_mod']!='A2']
 
 for i in [racio_2019,racio_2020,racio_2021]:
     print('jec_2019' in i)
+
+
+
 
 
 
