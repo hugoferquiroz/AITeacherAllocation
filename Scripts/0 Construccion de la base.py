@@ -83,6 +83,25 @@ for i in [racio_2019,racio_2020,racio_2021]:
 
 
 
+# Cambiando el nombre de la matricula
+racio_2020 = racio_2020.rename(columns={'cant1_alum': 'mat1 (t)', 
+                                        'cant2_alum': 'mat2 (t)', 
+                                        'cant3_alum': 'mat3 (t)', 
+                                        'cant4_alum': 'mat4 (t)', 
+                                        'cant5_alum': 'mat5 (t)',
+                                        'cant6_alum': 'mat6 (t)'})
+
+lag = 0
+for anio in ['2016','2017','2018']:
+  lag = lag + 1
+  racio_2019 = racio_2019.rename(columns={f'cant0_alum_{anio}': f'mat0 (t-{lag})', 
+                                          f'cant1_alum_{anio}': f'mat1 (t-{lag})',
+                                          f'cant2_alum_{anio}': f'mat2 (t-{lag})', 
+                                          f'cant3_alum_{anio}': f'mat3 (t-{lag})',
+                                          f'cant4_alum_{anio}': f'mat4 (t-{lag})', 
+                                          f'cant5_alum_{anio}': f'mat5 (t-{lag})', 
+                                          f'cant6_alum_{anio}': f'mat6 (t-{lag})'})
+
 
 
 
