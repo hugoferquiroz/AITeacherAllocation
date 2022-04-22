@@ -14,13 +14,12 @@ pd.options.mode.chained_assignment = None
 work =  Path(r'D:\Trabajo\AITeacherAllocation')
 
 # Import data
-def carga_resultados_sira(filename):
-    if filename.suffix == '.xlsx':
-        siraweb = pd.read_excel(filename, sheet_name = 'Global', skiprows = 5)
-    elif filename.suffix == '.dta':
-        siraweb = pd.read_stata(filename)
-    return siraweb
-
+# def carga_resultados_sira(filename):
+#     if filename.suffix == '.xlsx':
+#         siraweb = pd.read_excel(filename, sheet_name = 'Global', skiprows = 5)
+#     elif filename.suffix == '.dta':
+#         siraweb = pd.read_stata(filename)
+#     return siraweb
 
 racio_2019 = pd.read_stata(work/r'Raw Data\Racio 2019.dta')
 racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
@@ -50,14 +49,55 @@ matricula_evaluacion = [ x for x in all_columns if x.startswith('cant') and not 
                  x.startswith('cant_inclusivo') and not x.find('cant_alum_')!=-1 and not
                  x.find('bolsa_horas')!=-1 ]
     
+        # Cambiando el nombre de la matricula para que todas los anios tengan la misma extension
+racio_2020 = racio_2020.rename(columns={'cant1_alum': 'cant1 (t)', 
+                                        'cant2_alum': 'cant2 (t)', 
+                                        'cant3_alum': 'cant3 (t)', 
+                                        'cant4_alum': 'cant4 (t)', 
+                                        'cant5_alum': 'cant5 (t)',
+                                        'cant6_alum': 'cant6 (t)'})
+
+racio_2020 = racio_2020.rename(columns={'cant1_inclusivo_2020': 'cant1 (t)', 
+                                        'cant2_inclusivo_2020': 'cant2 (t)', 
+                                        'cant3_inclusivo_2020': 'cant3 (t)', 
+                                        'cant4_inclusivo_2020': 'cant4 (t)', 
+                                        'cant5_inclusivo_2020': 'cant5 (t)',
+                                        'cant6_inclusivo_2020': 'cant6 (t)'})
+
+racio_2020[matricula_evaluacion]
+racio_2020['cant0_inclusivo_2020']
+racio_2020['cant1_alum']
+# cant1_inclusivo_2020
+
+
+lag = 0
+for anio in ['2019','2018','2017','2016']:
+  lag = lag + 1
+  racio_2020 = racio_2020.rename(columns={f'cant0_alum_{anio}': f'cant0 (t-{lag})', 
+                                          f'cant1_alum_{anio}': f'cant1 (t-{lag})',
+                                          f'cant2_alum_{anio}': f'cant2 (t-{lag})', 
+                                          f'cant3_alum_{anio}': f'cant3 (t-{lag})',
+                                          f'cant4_alum_{anio}': f'cant4 (t-{lag})', 
+                                          f'cant5_alum_{anio}': f'cant5 (t-{lag})', 
+                                          f'cant6_alum_{anio}': f'cant6 (t-{lag})'})
+
+
+
+    
     #Datos de la evaluacion
 datos_evaluacion = ['usuario_minedu','bolsa_nexus','bolsa_sira']
     #Resultados
 requerimientos = [x for x in all_columns if x.startswith('req') and not x.find('req_exd')!=-1]
 excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith('2020') and not x.find('tot_')!=-1 ]
-       
-  
-    
+           
+
+ 
+
+
+for i in [racio_2019,racio_2020,racio_2021]:
+    print('jec_2019' in i)
+
+# Base consolidada   
 muermo = racio_2020[identificacion+pea_evaluada+matricula_evaluacion+
                     datos_evaluacion+requerimientos+excedentes]
     
@@ -78,29 +118,7 @@ racio_2021['nivel'].value_counts()
 racio_2021['niv_mod'].value_counts()
 racio_2021[racio_2021['niv_mod']!='A2']
 
-for i in [racio_2019,racio_2020,racio_2021]:
-    print('jec_2019' in i)
 
-
-
-# Cambiando el nombre de la matricula
-racio_2020 = racio_2020.rename(columns={'cant1_alum': 'mat1 (t)', 
-                                        'cant2_alum': 'mat2 (t)', 
-                                        'cant3_alum': 'mat3 (t)', 
-                                        'cant4_alum': 'mat4 (t)', 
-                                        'cant5_alum': 'mat5 (t)',
-                                        'cant6_alum': 'mat6 (t)'})
-
-lag = 0
-for anio in ['2016','2017','2018']:
-  lag = lag + 1
-  racio_2019 = racio_2019.rename(columns={f'cant0_alum_{anio}': f'mat0 (t-{lag})', 
-                                          f'cant1_alum_{anio}': f'mat1 (t-{lag})',
-                                          f'cant2_alum_{anio}': f'mat2 (t-{lag})', 
-                                          f'cant3_alum_{anio}': f'mat3 (t-{lag})',
-                                          f'cant4_alum_{anio}': f'mat4 (t-{lag})', 
-                                          f'cant5_alum_{anio}': f'mat5 (t-{lag})', 
-                                          f'cant6_alum_{anio}': f'mat6 (t-{lag})'})
 
 
 
