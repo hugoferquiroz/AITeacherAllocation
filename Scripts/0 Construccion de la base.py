@@ -24,11 +24,17 @@ work =  Path(r'D:\Trabajo\AITeacherAllocation')
 racio_2019 = pd.read_stata(work/r'Raw Data\Racio 2019.dta')
 racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
 racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2021.dta')
+padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
 
 #Variables a usar
 all_columns = racio_2020.columns.values.tolist()
+padron_columns = padron_gg1.columns.tolist()
+
     #Datos de identificacion (salen del padron gg1)
-identificacion = ['cod_mod'] 
+identificacion = ['cod_mod','niv_mod', 'd_niv_mod','gestion','d_gestion','ges_dep','d_ges_dep','ubigeo',
+                  'd_dpto','d_prov','d_dist','d_region','codooii','d_dreugel','nlat_ie','nlong_ie',
+                  'estado','d_estado','region','tipo_entidad'] 
+asignaciones_temporales=['rural_upp_2020','vraem_upp_2020','fron_upp_2020','bilin_upp_2020']
 
     #PEA evaluada
 for cargo in ['dir','sub_dir']:
@@ -95,7 +101,12 @@ datos_evaluacion = ['usuario_minedu','bolsa_nexus','bolsa_sira']
     #Resultados
 requerimientos = [x for x in all_columns if x.startswith('req') and not x.find('req_exd')!=-1]
 excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith('2020') and not x.find('tot_')!=-1 ]
-           
+    #Agrego datos del padron
+df_2020 = racio_2020[identificacion+pea_evaluada+matricula_rename+datos_evaluacion+
+                    requerimientos+excedentes]    
+df_2020 = pd.merge(df_2020,padron_gg1,on=['cod_mod','anexo'],how='left',)
+
+identificacion + asignaciones_temporales
 
 
 
@@ -104,17 +115,7 @@ excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith('2020')
 for i in [racio_2019,racio_2020,racio_2021]:
     print('jec_2019' in i)
 
-# Base consolidada   
-muermo = racio_2020[identificacion+pea_evaluada+matricula_rename+datos_evaluacion+
-                    requerimientos+excedentes]
-
-    
-muermo.columns
-
-
-
-    
-    
+# Base consolidada       
 for x in all_columns:
     if x.find('usuario')!=-1:
         print(f'{x}')
