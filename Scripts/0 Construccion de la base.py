@@ -50,24 +50,21 @@ matricula_evaluacion = [ x for x in all_columns if x.startswith('cant') and not 
                  x.find('bolsa_horas')!=-1 ]
     
         # Cambiando el nombre de la matricula para que todas los anios tengan la misma extension
-racio_2020 = racio_2020.rename(columns={'cant1_alum': 'cant1 (t)', 
-                                        'cant2_alum': 'cant2 (t)', 
-                                        'cant3_alum': 'cant3 (t)', 
-                                        'cant4_alum': 'cant4 (t)', 
-                                        'cant5_alum': 'cant5 (t)',
-                                        'cant6_alum': 'cant6 (t)'})
+racio_2020 = racio_2020.rename(columns={'cant0_alum_2020': 'cant0 (t)',
+                                        'cant1_alum_2020': 'cant1 (t)', 
+                                        'cant2_alum_2020': 'cant2 (t)', 
+                                        'cant3_alum_2020': 'cant3 (t)', 
+                                        'cant4_alum_2020': 'cant4 (t)', 
+                                        'cant5_alum_2020': 'cant5 (t)',
+                                        'cant6_alum_2020': 'cant6 (t)'})
 
-racio_2020 = racio_2020.rename(columns={'cant1_inclusivo_2020': 'cant1 (t)', 
-                                        'cant2_inclusivo_2020': 'cant2 (t)', 
-                                        'cant3_inclusivo_2020': 'cant3 (t)', 
-                                        'cant4_inclusivo_2020': 'cant4 (t)', 
-                                        'cant5_inclusivo_2020': 'cant5 (t)',
-                                        'cant6_inclusivo_2020': 'cant6 (t)'})
-
-racio_2020[matricula_evaluacion]
-racio_2020['cant0_inclusivo_2020']
-racio_2020['cant1_alum']
-# cant1_inclusivo_2020
+racio_2020 = racio_2020.rename(columns={'cant0_inclusivo_2020': 'inclu0 (t)',
+                                        'cant1_inclusivo_2020': 'inclu1 (t)', 
+                                        'cant2_inclusivo_2020': 'inclu2 (t)', 
+                                        'cant3_inclusivo_2020': 'inclu3 (t)', 
+                                        'cant4_inclusivo_2020': 'inclu4 (t)', 
+                                        'cant5_inclusivo_2020': 'inclu5 (t)',
+                                        'cant6_inclusivo_2020': 'inclu6 (t)'})
 
 
 lag = 0
@@ -80,10 +77,19 @@ for anio in ['2019','2018','2017','2016']:
                                           f'cant4_alum_{anio}': f'cant4 (t-{lag})', 
                                           f'cant5_alum_{anio}': f'cant5 (t-{lag})', 
                                           f'cant6_alum_{anio}': f'cant6 (t-{lag})'})
+  
+  racio_2020 = racio_2020.rename(columns={f'cant0_inclusivo_{anio}': f'inclu0 (t-{lag})', 
+                                          f'cant1_inclusivo_{anio}': f'inclu1 (t-{lag})',
+                                          f'cant2_inclusivo_{anio}': f'inclu2 (t-{lag})', 
+                                          f'cant3_inclusivo_{anio}': f'inclu3 (t-{lag})',
+                                          f'cant4_inclusivo_{anio}': f'inclu4 (t-{lag})', 
+                                          f'cant5_inclusivo_{anio}': f'inclu5 (t-{lag})', 
+                                          f'cant6_inclusivo_{anio}': f'inclu6 (t-{lag})'})
+  
+  
+    #Matricula 
+matricula_rename = [ x for x in racio_2020.columns.to_list() if x.find('(t')!=-1]
 
-
-
-    
     #Datos de la evaluacion
 datos_evaluacion = ['usuario_minedu','bolsa_nexus','bolsa_sira']
     #Resultados
@@ -91,20 +97,22 @@ requerimientos = [x for x in all_columns if x.startswith('req') and not x.find('
 excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith('2020') and not x.find('tot_')!=-1 ]
            
 
- 
+
+
 
 
 for i in [racio_2019,racio_2020,racio_2021]:
     print('jec_2019' in i)
 
 # Base consolidada   
-muermo = racio_2020[identificacion+pea_evaluada+matricula_evaluacion+
-                    datos_evaluacion+requerimientos+excedentes]
+muermo = racio_2020[identificacion+pea_evaluada+matricula_rename+datos_evaluacion+
+                    requerimientos+excedentes]
+
     
-muermo.describe 
- 
-for i in matricula_evaluacion:
-    print(i in racio_2020)
+muermo.columns
+
+
+
     
     
 for x in all_columns:
@@ -117,6 +125,10 @@ racio_2021['nivel'].value_counts()
 
 racio_2021['niv_mod'].value_counts()
 racio_2021[racio_2021['niv_mod']!='A2']
+
+
+
+
 
 
 
