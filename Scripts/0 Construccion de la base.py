@@ -136,6 +136,14 @@ reporte_missing
 
 
 
+#Exporto la base
+df.to_csv(work/r'Results\Base consolidada.csv')
+
+
+df['d_niv_mod'].value_counts()
+
+
+
 # Build a data dictionary
 padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
 all_columns = padron_gg1.columns.values.tolist()
