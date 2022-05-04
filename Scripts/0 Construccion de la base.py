@@ -43,14 +43,15 @@ def cargar_base(df,anio):
     #Datos de identificacion (salen del padron gg1)
     identificacion_padron = ['cod_mod','niv_mod', 'd_niv_mod','gestion','d_gestion','ges_dep','d_ges_dep','ubigeo',
                          'd_dpto','d_prov','d_dist','d_region','codooii','d_dreugel','nlat_ie','nlong_ie',
-                         'estado','d_estado','region','tipo_entidad'] 
+                         'estado','d_estado','region','tipo_entidad',f'jec_{anio}'] 
     asignaciones_temporales=[f'rural_upp_{anio}',f'vraem_upp_{anio}',f'fron_upp_{anio}',f'bilin_upp_{anio}']
     identificacion = ['cod_mod']
     padron_gg1_short = padron_gg1.loc[padron_gg1['anexo']=='0' ,identificacion_padron+asignaciones_temporales]
     padron_gg1_short.rename(columns={f'rural_upp_{anio}':'ruralidad',
                                      f'vraem_upp_{anio}':'vraem',
                                      f'fron_upp_{anio}':'frontera',
-                                     f'bilin_upp_{anio}':'bilingue'},inplace=True)
+                                     f'bilin_upp_{anio}':'bilingue',
+                                     f'jec_{anio}':'jec'},inplace=True)
     
     #PEA evaluada
     for cargo in ['dir','sub_dir']:
@@ -129,18 +130,9 @@ df = racio_2020_ok.append(racio_2021_ok)
 
 
 
-#Inspecciono los missing
-reporte_missing=df.isnull().mean() * 100
-reporte_missing
-
-
-
-
 #Exporto la base
 df.to_csv(work/r'Results\Base consolidada.csv')
-
-
-df['d_niv_mod'].value_counts()
+df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base consolidada.csv')
 
 
 
