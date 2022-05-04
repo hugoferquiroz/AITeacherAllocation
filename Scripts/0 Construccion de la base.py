@@ -69,21 +69,21 @@ def cargar_base(df,anio):
     
     #Matricula     
         # Cambiando el nombre de la matricula para que todas los anios tengan la misma extension
-    df = df.rename(columns={f'cant0_alum_{anio}': 'cant0 (t)',
-                            'cant1_alum_{anio}': 'cant1 (t)', 
-                            'cant2_alum_{anio}': 'cant2 (t)', 
-                            'cant3_alum_{anio}': 'cant3 (t)', 
-                            'cant4_alum_{anio}': 'cant4 (t)', 
-                            'cant5_alum_{anio}': 'cant5 (t)',
-                            'cant6_alum_{anio}': 'cant6 (t)'})
+    df = df.rename(columns={f'cant0_alum_{anio}':'cant0 (t)',
+                            f'cant1_alum_{anio}': 'cant1 (t)', 
+                            f'cant2_alum_{anio}': 'cant2 (t)', 
+                            f'cant3_alum_{anio}': 'cant3 (t)', 
+                            f'cant4_alum_{anio}': 'cant4 (t)', 
+                            f'cant5_alum_{anio}': 'cant5 (t)',
+                            f'cant6_alum_{anio}': 'cant6 (t)'})
 
-    df = df.rename(columns={'cant0_inclusivo_{anio}': 'inclu0 (t)',
-                            'cant1_inclusivo_{anio}': 'inclu1 (t)', 
-                            'cant2_inclusivo_{anio}': 'inclu2 (t)', 
-                            'cant3_inclusivo_{anio}': 'inclu3 (t)', 
-                            'cant4_inclusivo_{anio}': 'inclu4 (t)', 
-                            'cant5_inclusivo_{anio}': 'inclu5 (t)',
-                            'cant6_inclusivo_{anio}': 'inclu6 (t)'})
+    df = df.rename(columns={f'cant0_inclusivo_{anio}': 'inclu0 (t)',
+                            f'cant1_inclusivo_{anio}': 'inclu1 (t)', 
+                            f'cant2_inclusivo_{anio}': 'inclu2 (t)', 
+                            f'cant3_inclusivo_{anio}': 'inclu3 (t)', 
+                            f'cant4_inclusivo_{anio}': 'inclu4 (t)', 
+                            f'cant5_inclusivo_{anio}': 'inclu5 (t)',
+                            f'cant6_inclusivo_{anio}': 'inclu6 (t)'})
 
     lag = 0
     anios = [anio - i for i in [1,2,3,4]]
@@ -105,7 +105,7 @@ def cargar_base(df,anio):
                               f'cant5_inclusivo_{anio}': f'inclu5 (t-{lag})', 
                               f'cant6_inclusivo_{anio}': f'inclu6 (t-{lag})'})
     
-    matricula_rename = [x for x in df.columns.to_list() if x.find('(t')!=-1]
+    matricula_rename = [x for x in df.columns.to_list() if x.find(' (t')!=-1]
     
     #Datos de la evaluacion
     datos_evaluacion = ['usuario_minedu','bolsa_nexus','bolsa_sira']
@@ -128,7 +128,7 @@ racio_2021_ok = cargar_base(racio_2021,2021)
 df = racio_2020_ok.append(racio_2021_ok)
 
 
-
+muermo=df.columns.to_list()
 
 #Exporto la base
 df.to_csv(work/r'Results\Base consolidada.csv')
