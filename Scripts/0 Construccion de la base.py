@@ -5,104 +5,129 @@ Created on Mon Mar 28 17:36:02 2022
 @author: Hugoferq y CarlosRV0803
 """
 
-#Import libraries
+#Importar las librerias
 import pandas as pd
 from pathlib import Path
 pd.options.mode.chained_assignment = None
 
-#Set files path
+#Configuro la direccion de trabajo
 work =  Path(r'D:\Trabajo\AITeacherAllocation')
 
-racio_2019 = pd.read_stata(work/r'Raw Data\Racio 2019.dta')
+#Cargo las bases de insumos
+# racio_2019 = pd.read_stata(work/r'Raw Data\Racio 2019.dta')
 racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
 racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2021.dta')
 padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
 
+#Funcion para limpiar y homogenizar las bases de datos
 
 
+def cargar_base(df,anio):
+    """
+    Esta funcion limpia y homogeniza los resultados de racionalizacion
 
-#Variables a usar
-all_columns = racio_2020.columns.values.tolist()
-padron_columns = padron_gg1.columns.tolist()
+    Parameters
+    ----------
+    df :   TYPE: DataFrame para limpiar y homogenizar
+           DataFrame para limpiar y homogenizar.
+    anio : TYPE. Int
+           Año de la base de datos
 
+    Returns
+    -------
+    df_ok : TYPE. DataFrame
+            DataFrame limpio y homogenizada
+
+    """
+    #Variables a usar
+    all_columns = df.columns.values.tolist()
+    
     #Datos de identificacion (salen del padron gg1)
-identificacion_padron = ['cod_mod','niv_mod', 'd_niv_mod','gestion','d_gestion','ges_dep','d_ges_dep','ubigeo',
+    identificacion_padron = ['cod_mod','niv_mod', 'd_niv_mod','gestion','d_gestion','ges_dep','d_ges_dep','ubigeo',
                          'd_dpto','d_prov','d_dist','d_region','codooii','d_dreugel','nlat_ie','nlong_ie',
                          'estado','d_estado','region','tipo_entidad'] 
-asignaciones_temporales=['rural_upp_2020','vraem_upp_2020','fron_upp_2020','bilin_upp_2020']
-identificacion = ['cod_mod']
-padron_gg1_short = padron_gg1.loc[padron_gg1['anexo']==0 ,identificacion_padron+asignaciones_temporales]
-
-    #PEA evaluada
-for cargo in ['dir','sub_dir']:
-    racio_2020[f'{cargo}_nom'] = racio_2020[f'{cargo}_des_org']+racio_2020[f'{cargo}_des_ev']
-    racio_2020[f'{cargo}_vac'] = racio_2020[f'{cargo}_des_ev']+racio_2020[f'{cargo}_enc_ev']+racio_2020[f'{cargo}_vac_ev']
-	
-for cargo in ['jer','doc','otro_doc','aux']:
-    racio_2020[f'{cargo}_nom']=racio_2020[f'{cargo}_nom_org']+racio_2020[f'{cargo}_nom_ev']
-    racio_2020[f'{cargo}_vac']=racio_2020[f'{cargo}_con_org']+racio_2020[f'{cargo}_con_ev']+racio_2020[f'{cargo}_vac_org']+racio_2020[f'{cargo}_vac_ev']
-
-pea_evaluada = []
-for cargo in ['dir','sub_dir','jer','doc','otro_doc','aux']:
-    for sit in ['nom','vac']:
-        pea_evaluada.append(f'{cargo}_{sit}')
-
-    #Matricula 
-matricula_evaluacion = [ x for x in all_columns if x.startswith('cant') and not x.startswith('cant_total_') and not 
-                 x.startswith('cant_inclusivo') and not x.find('cant_alum_')!=-1 and not
-                 x.find('bolsa_horas')!=-1 ]
+    asignaciones_temporales=[f'rural_upp_{anio}',f'vraem_upp_{anio}',f'fron_upp_{anio}',f'bilin_upp_{anio}']
+    identificacion = ['cod_mod']
+    padron_gg1_short = padron_gg1.loc[padron_gg1['anexo']==0 ,identificacion_padron+asignaciones_temporales]
     
+    #PEA evaluada
+    for cargo in ['dir','sub_dir']:
+        df[f'{cargo}_nom'] = df[f'{cargo}_des_org']+df[f'{cargo}_des_ev']
+        df[f'{cargo}_vac'] = df[f'{cargo}_des_ev']+df[f'{cargo}_enc_ev']+df[f'{cargo}_vac_ev']
+	
+    for cargo in ['jer','doc','otro_doc','aux']:
+        df[f'{cargo}_nom']=df[f'{cargo}_nom_org']+df[f'{cargo}_nom_ev']
+        df[f'{cargo}_vac']=df[f'{cargo}_con_org']+df[f'{cargo}_con_ev']+df[f'{cargo}_vac_org']+df[f'{cargo}_vac_ev']
+
+    pea_evaluada = []
+    for cargo in ['dir','sub_dir','jer','doc','otro_doc','aux']:
+        for sit in ['nom','vac']:
+            pea_evaluada.append(f'{cargo}_{sit}')    
+    
+    #Matricula     
         # Cambiando el nombre de la matricula para que todas los anios tengan la misma extension
-racio_2020 = racio_2020.rename(columns={'cant0_alum_2020': 'cant0 (t)',
-                                        'cant1_alum_2020': 'cant1 (t)', 
-                                        'cant2_alum_2020': 'cant2 (t)', 
-                                        'cant3_alum_2020': 'cant3 (t)', 
-                                        'cant4_alum_2020': 'cant4 (t)', 
-                                        'cant5_alum_2020': 'cant5 (t)',
-                                        'cant6_alum_2020': 'cant6 (t)'})
+    df = df.rename(columns={f'cant0_alum_{anio}': 'cant0 (t)',
+                            'cant1_alum_{anio}': 'cant1 (t)', 
+                            'cant2_alum_{anio}': 'cant2 (t)', 
+                            'cant3_alum_{anio}': 'cant3 (t)', 
+                            'cant4_alum_{anio}': 'cant4 (t)', 
+                            'cant5_alum_{anio}': 'cant5 (t)',
+                            'cant6_alum_{anio}': 'cant6 (t)'})
 
-racio_2020 = racio_2020.rename(columns={'cant0_inclusivo_2020': 'inclu0 (t)',
-                                        'cant1_inclusivo_2020': 'inclu1 (t)', 
-                                        'cant2_inclusivo_2020': 'inclu2 (t)', 
-                                        'cant3_inclusivo_2020': 'inclu3 (t)', 
-                                        'cant4_inclusivo_2020': 'inclu4 (t)', 
-                                        'cant5_inclusivo_2020': 'inclu5 (t)',
-                                        'cant6_inclusivo_2020': 'inclu6 (t)'})
+    df = df.rename(columns={'cant0_inclusivo_{anio}': 'inclu0 (t)',
+                            'cant1_inclusivo_{anio}': 'inclu1 (t)', 
+                            'cant2_inclusivo_{anio}': 'inclu2 (t)', 
+                            'cant3_inclusivo_{anio}': 'inclu3 (t)', 
+                            'cant4_inclusivo_{anio}': 'inclu4 (t)', 
+                            'cant5_inclusivo_{anio}': 'inclu5 (t)',
+                            'cant6_inclusivo_{anio}': 'inclu6 (t)'})
 
-
-lag = 0
-for anio in ['2019','2018','2017','2016']:
-  lag = lag + 1
-  racio_2020 = racio_2020.rename(columns={f'cant0_alum_{anio}': f'cant0 (t-{lag})', 
-                                          f'cant1_alum_{anio}': f'cant1 (t-{lag})',
-                                          f'cant2_alum_{anio}': f'cant2 (t-{lag})', 
-                                          f'cant3_alum_{anio}': f'cant3 (t-{lag})',
-                                          f'cant4_alum_{anio}': f'cant4 (t-{lag})', 
-                                          f'cant5_alum_{anio}': f'cant5 (t-{lag})', 
-                                          f'cant6_alum_{anio}': f'cant6 (t-{lag})'})
-  
-  racio_2020 = racio_2020.rename(columns={f'cant0_inclusivo_{anio}': f'inclu0 (t-{lag})', 
-                                          f'cant1_inclusivo_{anio}': f'inclu1 (t-{lag})',
-                                          f'cant2_inclusivo_{anio}': f'inclu2 (t-{lag})', 
-                                          f'cant3_inclusivo_{anio}': f'inclu3 (t-{lag})',
-                                          f'cant4_inclusivo_{anio}': f'inclu4 (t-{lag})', 
-                                          f'cant5_inclusivo_{anio}': f'inclu5 (t-{lag})', 
-                                          f'cant6_inclusivo_{anio}': f'inclu6 (t-{lag})'})
-  
-  
-    #Matricula 
-matricula_rename = [x for x in racio_2020.columns.to_list() if x.find('(t')!=-1]
-
+    lag = 0
+    anios = [anio - i for i in [1,2,3,4]]
+    for anio in anios:
+      lag = lag + 1
+      df = df.rename(columns={f'cant0_alum_{anio}': f'cant0 (t-{lag})', 
+                              f'cant1_alum_{anio}': f'cant1 (t-{lag})',
+                              f'cant2_alum_{anio}': f'cant2 (t-{lag})', 
+                              f'cant3_alum_{anio}': f'cant3 (t-{lag})',
+                              f'cant4_alum_{anio}': f'cant4 (t-{lag})', 
+                              f'cant5_alum_{anio}': f'cant5 (t-{lag})', 
+                              f'cant6_alum_{anio}': f'cant6 (t-{lag})'})
+      
+      df = df.rename(columns={f'cant0_inclusivo_{anio}': f'inclu0 (t-{lag})', 
+                              f'cant1_inclusivo_{anio}': f'inclu1 (t-{lag})',
+                              f'cant2_inclusivo_{anio}': f'inclu2 (t-{lag})', 
+                              f'cant3_inclusivo_{anio}': f'inclu3 (t-{lag})',
+                              f'cant4_inclusivo_{anio}': f'inclu4 (t-{lag})', 
+                              f'cant5_inclusivo_{anio}': f'inclu5 (t-{lag})', 
+                              f'cant6_inclusivo_{anio}': f'inclu6 (t-{lag})'})
+    
+    matricula_rename = [x for x in df.columns.to_list() if x.find('(t')!=-1]
+    
     #Datos de la evaluacion
-datos_evaluacion = ['usuario_minedu','bolsa_nexus','bolsa_sira']
+    datos_evaluacion = ['usuario_minedu','bolsa_nexus','bolsa_sira']
     #Resultados
-requerimientos = [x for x in all_columns if x.startswith('req') and not x.find('req_exd')!=-1]
-excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith('2020') and not x.find('tot_')!=-1 ]
+    requerimientos = [x for x in all_columns if x.startswith('req') and not x.find('req_exd')!=-1]
+    excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith(f'{anio}') and not x.find('tot_')!=-1 ]
     #Agrego datos del padron
-racio_2020_short = racio_2020[identificacion+pea_evaluada+matricula_rename+datos_evaluacion+
-                    requerimientos+excedentes] 
+    racio_short = df[identificacion+pea_evaluada+matricula_rename+datos_evaluacion+requerimientos+excedentes] 
     #Base consolidada   
-df_2020 = pd.merge(racio_2020_short,padron_gg1_short,on=['cod_mod'],how='left',validate='1:1')
+    df_ok = pd.merge(racio_short,padron_gg1_short,on=['cod_mod'],how='left',validate='1:1')
+    df_ok['year'] = anio
+
+    return df_ok
+
+racio_2020_ok = cargar_base(racio_2020,2020)
+racio_2021_ok = cargar_base(racio_2021,2021)
+
+
+
+racio_2021_ok.shape
+muermo = racio_2021_ok.columns.to_list()
+muermo
+
+
+racio_2021_ok['usuario_minedu'].value_counts()
 
 
 
@@ -110,11 +135,9 @@ df_2020 = pd.merge(racio_2020_short,padron_gg1_short,on=['cod_mod'],how='left',v
 
 
 
-'usuario_minedu' in all_columns
-racio_2021['nivel'].value_counts()
 
-racio_2021['niv_mod'].value_counts()
-racio_2021[racio_2021['niv_mod']!='A2']
+
+
 
 
 
