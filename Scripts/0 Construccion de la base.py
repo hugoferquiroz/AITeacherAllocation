@@ -14,10 +14,12 @@ pd.options.mode.chained_assignment = None
 work =  Path(r'D:\Trabajo\AITeacherAllocation')
 
 #Cargo las bases de insumos
-# racio_2019 = pd.read_stata(work/r'Raw Data\Racio 2019.dta')
 racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
 racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2021.dta')
 padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
+#Renombro alguans variables
+racio_2021.rename(columns={'numeroseccion':'secciones_necesarias'}, inplace=True)
+
 
 #Funcion para limpiar y homogenizar las bases de datos
 def cargar_base(df,anio):
@@ -108,7 +110,7 @@ def cargar_base(df,anio):
     matricula_rename = [x for x in df.columns.to_list() if x.find(' (t')!=-1]
     
     #Datos de la evaluacion
-    datos_evaluacion = ['usuario_minedu','bolsa_nexus','bolsa_sira']
+    datos_evaluacion = ['usuario_minedu','bolsa_nexus','bolsa_sira','secciones_necesarias']
     #Resultados
     requerimientos = [x for x in all_columns if x.startswith('req') and not x.find('req_exd')!=-1]
     excedentes = [x for x in all_columns if x.find('exd')!=-1 and x.endswith(f'{anio}') and not x.find('tot_')!=-1 ]
@@ -128,7 +130,7 @@ racio_2021_ok = cargar_base(racio_2021,2021)
 df = racio_2020_ok.append(racio_2021_ok)
 
 
-muermo=df.columns.to_list()
+
 
 #Exporto la base
 df.to_csv(work/r'Results\Base consolidada.csv')
