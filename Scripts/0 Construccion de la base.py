@@ -2,7 +2,7 @@
 """
 Created on Mon Mar 28 17:36:02 2022
 
-@author: Hugoferq y CarlosRV0803
+@author: hugoferq y carlosRV0803
 """
 
 #Importar las librerias
@@ -20,8 +20,6 @@ racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2021.dta')
 padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
 
 #Funcion para limpiar y homogenizar las bases de datos
-
-
 def cargar_base(df,anio):
     """
     Esta funcion limpia y homogeniza los resultados de racionalizacion
@@ -48,7 +46,11 @@ def cargar_base(df,anio):
                          'estado','d_estado','region','tipo_entidad'] 
     asignaciones_temporales=[f'rural_upp_{anio}',f'vraem_upp_{anio}',f'fron_upp_{anio}',f'bilin_upp_{anio}']
     identificacion = ['cod_mod']
-    padron_gg1_short = padron_gg1.loc[padron_gg1['anexo']==0 ,identificacion_padron+asignaciones_temporales]
+    padron_gg1_short = padron_gg1.loc[padron_gg1['anexo']=='0' ,identificacion_padron+asignaciones_temporales]
+    padron_gg1_short.rename(columns={f'rural_upp_{anio}':'ruralidad',
+                                     f'vraem_upp_{anio}':'vraem',
+                                     f'fron_upp_{anio}':'frontera',
+                                     f'bilin_upp_{anio}':'bilingue'},inplace=True)
     
     #PEA evaluada
     for cargo in ['dir','sub_dir']:
@@ -113,39 +115,23 @@ def cargar_base(df,anio):
     racio_short = df[identificacion+pea_evaluada+matricula_rename+datos_evaluacion+requerimientos+excedentes] 
     #Base consolidada   
     df_ok = pd.merge(racio_short,padron_gg1_short,on=['cod_mod'],how='left',validate='1:1')
+    #Homogenizo las variables
     df_ok['year'] = anio
 
     return df_ok
 
+
+#Consolido la base
 racio_2020_ok = cargar_base(racio_2020,2020)
 racio_2021_ok = cargar_base(racio_2021,2021)
-
-
-
-racio_2021_ok.shape
-muermo = racio_2021_ok.columns.to_list()
-muermo
-
-
-racio_2021_ok['usuario_minedu'].value_counts()
+df = racio_2020_ok.append(racio_2021_ok)
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#Inspecciono los missing
+reporte_missing=df.isnull().mean() * 100
+reporte_missing
 
 
 
