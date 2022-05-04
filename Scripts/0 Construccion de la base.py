@@ -14,6 +14,7 @@ pd.options.mode.chained_assignment = None
 work =  Path(r'D:\Trabajo\AITeacherAllocation')
 
 #Cargo las bases de insumos
+racio_2019 = pd.read_csv(work/r'Raw Data\Base 2019.csv')
 racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
 racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2021.dta')
 padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
@@ -120,7 +121,6 @@ def cargar_base(df,anio):
     df_ok = pd.merge(racio_short,padron_gg1_short,on=['cod_mod'],how='left',validate='1:1')
     #Homogenizo las variables
     df_ok['year'] = anio
-
     return df_ok
 
 
@@ -128,10 +128,7 @@ def cargar_base(df,anio):
 racio_2020_ok = cargar_base(racio_2020,2020)
 racio_2021_ok = cargar_base(racio_2021,2021)
 df = racio_2020_ok.append(racio_2021_ok)
-
-
-
-
+df = df.append(racio_2019)
 #Exporto la base
 df.to_csv(work/r'Results\Base consolidada.csv')
 df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base consolidada.csv')
