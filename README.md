@@ -1,6 +1,20 @@
 # AITeacherAllocation
 This repository create an AI to evaluate teacher allocation in peruvian public schools.
 
+# Problem Definition
+
+This project aims to determine which factor determine the number of classroom in schools. We need to know:
+- Show the contribution to each factor for the numbers of classroom.
+- Show which features are more important in determining the classroom.
+-
+
+
+target variable secciones_necesarias classroom
+
+
+# Use of Case
+_"Predict the number of classroom in the schools to determine the teacher allocation and budget"_
+
 
 
 # Steps to replicate
