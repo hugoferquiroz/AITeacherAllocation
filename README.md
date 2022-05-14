@@ -7,7 +7,7 @@ The numbers of classroom is determined in meets between by workers of ministry o
 
 In these meet the allocation of the classroom is based by the resolution [RMV 307-2019](https://cdn.www.gob.pe/uploads/document/file/436535/RVM_N__307-2019-MINEDU.pdf) but the resolution is discretionally to vary the allocation of classroom size in +-5 alums by classroom based on duly justified reasons.
 
-This project is important for two reasons:
+This project is important for three reasons:
 1. **Transparency**: Know the contribution of each factor and their relevance to determine the number of classroom give clear rules to incorporate in a new resolution.
 2. **Improve the speed of the process**: All the process spend around 7 months in meetings, data processing, bureaucracy and budget allocation.
 3. **Avoid budget constraint**: Allocate resource just in time.
