@@ -20,7 +20,7 @@ _"Predict the number of classroom in the schools to determine the teacher alloca
 
 
 # Scope of the project
-For now, the scope of the project is for kindergarden and primary schools managed by the Ministry of Education
+For now, the scope of the project is for kindergarten and primary schools managed by the Ministry of Education.
 
 
 
