@@ -27,8 +27,6 @@ In these meet the allocation of the classroom is based by the resolution [RMV 30
 | And more      | With an escaped \|          || "Try 'quotes' in quotes "         |||
 [Compicated table]
 
-
-
 The allocation given by theses l but is not necesary strick because there area flexibilite rules
 
 
