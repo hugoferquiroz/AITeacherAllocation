@@ -4,9 +4,7 @@ This repository create an AI to evaluate teacher allocation in peruvian public s
 # Problem Definition
 
 The numbers of classroom is determined in meets between by workers of ministry of education and workers of regional district schools.
-guide to [RMV 307-2019](https://cdn.www.gob.pe/uploads/document/file/436535/RVM_N__307-2019-MINEDU.pdf) but is not necesary strick because there area flexibilite rules 
-
-
+guide to [RMV 307-2019](https://cdn.www.gob.pe/uploads/document/file/436535/RVM_N__307-2019-MINEDU.pdf) but is not necesary strick because there area flexibilite rules
 
 
 This project aims to determine which factor determine the number of classroom in schools. We show:
@@ -15,8 +13,15 @@ This project aims to determine which factor determine the number of classroom in
 
 The main goal of this project is
 
+
+
 # Use of Case
 _"Predict the number of classroom in the schools to determine the teacher allocation and budget"_
+
+
+# Scope of the project
+For now, the scope of the project is for kindergarden and primary schools managed by the Ministry of Education
+
 
 
 
