@@ -4,7 +4,32 @@ This repository create an AI to evaluate teacher allocation in peruvian public s
 # Problem Definition
 
 The numbers of classroom is determined in meets between by workers of ministry of education and workers of regional district schools.
-guide to [RMV 307-2019](https://cdn.www.gob.pe/uploads/document/file/436535/RVM_N__307-2019-MINEDU.pdf) but is not necesary strick because there area flexibilite rules
+
+In these meet the allocation of the classroom is based by the resolution [RMV 307-2019](https://cdn.www.gob.pe/uploads/document/file/436535/RVM_N__307-2019-MINEDU.pdf). This resolution assig classroom by:
+
+
+|                  |  Teacher workforce | Urban | Rural |   |
+|------------------|--------------------|-------|-------|---|
+| kindergarten     |                    |       |       |   |
+|                  |                    |       |       |   |
+| Primary school   |                    |       |       |   |
+| Secondary school |                    |       |       |   |
+
+
+|               |          Grouping             ||         Grouping 2         ||  Not Grouped    |
+| First Header  | Second Header | Third Header   | Forth Header | Fifth Header | Sixth Header    |
+| ------------- | :-----------: | -------------: | :----------: | :----------: | --------------- |
+| Tall Cell     |          *Long Cell*          ||         *Long Long Cell*                    |||
+| ^^            |   **Bold**    | 1. first item  | *Italic*     | 3. third item | + first point  |\
+| ^^            |               | 1. second item |              | 1. forth item | + second point |
+
+| New section   |     More      |         Data   | ... - -- --- |||
+| And more      | With an escaped \|          || "Try 'quotes' in quotes "         |||
+[Compicated table]
+
+
+
+The allocation given by theses l but is not necesary strick because there area flexibilite rules
 
 
 This project aims to determine which factor determine the number of classroom in schools. We show:
@@ -21,7 +46,6 @@ _"Predict the number of classroom in the schools to determine the teacher alloca
 
 # Scope of the project
 For now, the scope of the project is for kindergarten and primary schools managed by the Ministry of Education.
-
 
 
 
