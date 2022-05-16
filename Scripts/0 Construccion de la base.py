@@ -47,13 +47,14 @@ def cargar_base(df,anio):
     identificacion_padron = ['cod_mod','niv_mod', 'd_niv_mod','gestion','d_gestion','ges_dep','d_ges_dep','ubigeo',
                          'd_dpto','d_prov','d_dist','d_region','codooii','d_dreugel','nlat_ie','nlong_ie',
                          'estado','d_estado','region','tipo_entidad',f'jec_{anio}'] 
-    asignaciones_temporales=[f'rural_upp_{anio}',f'vraem_upp_{anio}',f'fron_upp_{anio}',f'bilin_upp_{anio}']
+    asignaciones_temporales=[f'rural_upp_{anio}',f'vraem_upp_{anio}',f'fron_upp_{anio}',f'bilin_upp_{anio}',f'tipie_upp_{anio}']
     identificacion = ['cod_mod']
     padron_gg1_short = padron_gg1.loc[padron_gg1['anexo']=='0' ,identificacion_padron+asignaciones_temporales]
     padron_gg1_short.rename(columns={f'rural_upp_{anio}':'ruralidad',
                                      f'vraem_upp_{anio}':'vraem',
                                      f'fron_upp_{anio}':'frontera',
                                      f'bilin_upp_{anio}':'bilingue',
+                                     f'tipie_upp_{anio}':'caracteristica',
                                      f'jec_{anio}':'jec'},inplace=True)
     
     #PEA evaluada
