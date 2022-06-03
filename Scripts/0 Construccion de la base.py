@@ -137,7 +137,10 @@ df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base co
 
 
 
-# Build a data dictionary
+# Build a data 
+
+columnas_dict = df.columns.to_list()
+
 # padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
 # all_columns = padron_gg1.columns.values.tolist()
 # matricula = []
