@@ -141,12 +141,10 @@ df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base co
 
 columnas_dict = df.columns.to_list()
 
-# padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
-# all_columns = padron_gg1.columns.values.tolist()
-# matricula = []
-# for x in all_columns:
-#     if x.startswith('cant'):
-#         matricula.append(x)
+matricula = []
+for x in columnas_dict :
+    if x.startswith('cant'):
+        matricula.append(x)
         
 # matricula_short = [ x for x in matricula if not x.startswith('cant_total_') and not x.startswith('cant_inclusivo')]
 # labels_matricula = []
