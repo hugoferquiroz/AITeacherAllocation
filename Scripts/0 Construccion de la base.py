@@ -142,6 +142,38 @@ columnas_dict = df.columns.to_list()
     # Matricula
 matricula = [x for x in columnas_dict if x.startswith('cant') | x.startswith('inclu')]
 labels_matricula = []
+
+
+for mat in matricula:
+    my_string = 'Matricula'          
+    if mat.find(f't{0}')!=-1:
+        print('Inicial < 1 año')    
+
+# Inicial
+    # 0-> <1 anio
+    # 1-> <2 anio
+    # 2-> <3 anio
+    # 3-> 3 anios inicial
+    # 4-> 4 anios inicial
+    # 5-> 5 anios inicial
+
+# Primaria
+    # 1 -> Primero de primaria
+    # 2 -> Segundo de primaria   
+    # 3 -> Tercero de primaria   
+    # 4 -> Cuarto de primaria   
+    # 5 -> Quinto de primaria   
+    # 6 -> Sexto de primaria   
+
+# Secundaria
+    # 1 -> Primero de secundaria
+    # 2 -> Segundo de secundaria
+    # 3 -> Tercero de secundaria
+    # 4 -> Cuarto de secundaria
+    # 5 -> Quinto de secundaria
+
+
+
 for i in matricula :
     my_string = 'Matricula'
     for anio in [2015,2016,2017,2018,2019,2020,2021,2022]:
