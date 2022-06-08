@@ -137,40 +137,34 @@ df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base co
 
 
 
-# Build a data 
-
+# Build a data dictionary
 columnas_dict = df.columns.to_list()
-
-matricula = []
-for x in columnas_dict :
-    if x.startswith('cant'):
-        matricula.append(x)
-        
-# matricula_short = [ x for x in matricula if not x.startswith('cant_total_') and not x.startswith('cant_inclusivo')]
-# labels_matricula = []
-# for i in matricula_short :
-#     my_string = 'Matricula'
-#     for anio in [2015,2016,2017,2018,2019,2020,2021,2022]:
-#         if i == 'cant_inclusivo_{anio}': 
-#             my_string = my_string + ' inclusivo total' + f'-{anio}'
-#             labels_matricula.append(my_string)
+    # Matricula
+matricula = [x for x in columnas_dict if x.startswith('cant') | x.startswith('inclu')]
+labels_matricula = []
+for i in matricula :
+    my_string = 'Matricula'
+    for anio in [2015,2016,2017,2018,2019,2020,2021,2022]:
+        if i == 'cant_inclusivo_{anio}': 
+            my_string = my_string + ' inclusivo total' + f'-{anio}'
+            labels_matricula.append(my_string)
                 
-#         elif i == 'cant_total_{anio}': 
-#             my_string = my_string + ' regular total' + f'-{anio}'
-#             labels_matricula.append(my_string)
+        elif i == 'cant_total_{anio}': 
+            my_string = my_string + ' regular total' + f'-{anio}'
+            labels_matricula.append(my_string)
 
-#         for grado in [0,1,2,3,4,5,6]:
+        for grado in [0,1,2,3,4,5,6]:
             
-#             if (f'cant{grado}' in i) and ('alum' in i) and i.endswith(f'{anio}'):
-#                 my_string = my_string + ' regular' + f' {grado} grado/año' + f'-{anio}'
-#                 labels_matricula.append(my_string)
+            if (f'cant{grado}' in i) and ('alum' in i) and i.endswith(f'{anio}'):
+                my_string = my_string + ' regular' + f' {grado} grado/año' + f'-{anio}'
+                labels_matricula.append(my_string)
                 
-#             elif (f'cant{grado}' in i) and ('inclusivo' in i) and i.endswith(f'{anio}'): 
-#                 my_string = my_string + ' inclusivo' + f' {grado} grado/año' + f'-{anio}'
-#                 labels_matricula.append(my_string)
+            elif (f'cant{grado}' in i) and ('inclusivo' in i) and i.endswith(f'{anio}'): 
+                my_string = my_string + ' inclusivo' + f' {grado} grado/año' + f'-{anio}'
+                labels_matricula.append(my_string)
 
-# dict_matricula = dict(zip(matricula_short , labels_matricula))
-# matricula_dd = pd.DataFrame(dict_matricula.items(), columns=['Variable', 'Etiqueta'] )
+dict_matricula = dict(zip(matricula_short , labels_matricula))
+matricula_dd = pd.DataFrame(dict_matricula.items(), columns=['Variable', 'Etiqueta'] )
 
 
 # 'bolsa_s', 'bolsa_n', 'secciones_necesarias_2019'
