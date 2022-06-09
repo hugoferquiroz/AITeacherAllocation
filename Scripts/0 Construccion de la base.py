@@ -142,12 +142,11 @@ columnas_dict = df.columns.to_list()
     # Matricula
 matricula = [x for x in columnas_dict if x.startswith('cant') | x.startswith('inclu')]
 labels_matricula = []
-
-
 for mat in matricula:
-    my_string = 'Matricula'          
-    if mat.find(f't{0}')!=-1:
-        print('Inicial < 1 año')    
+    if (mat.find(f't{0}')!=-1) & (mat.find('cant')!=-1):
+        my_string = 'Alumno regulares - cuna menor a 12 meses'
+        labels_matricula.append(my_string)
+        
 
 # Inicial
     # 0-> <1 anio
