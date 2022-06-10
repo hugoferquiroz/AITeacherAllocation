@@ -139,6 +139,15 @@ df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base co
 
 # Build a data dictionary
 columnas_dict = df.columns.to_list()
+diccionario = pd.DataFrame(columnas_dict,columns=['Columnas'])
+diccionario['Etiqueta'] = ''
+
+for var in columnas_dict:
+    if var.find('cant')!=-1: 
+        diccionario['Etiqueta']='Matricula regular'
+
+
+
     # Matricula
 matricula = [x for x in columnas_dict if x.startswith('cant') | x.startswith('inclu')]
 labels_matricula = []
