@@ -142,9 +142,13 @@ columnas_dict = df.columns.to_list()
 diccionario = pd.DataFrame(columnas_dict,columns=['Columnas'])
 diccionario['Etiqueta'] = ''
 
+
+diccionario.loc[diccionario['Columnas'].str.find('cant')!=-1,'Etiqueta']='Matricula regular'
+
+
 for var in columnas_dict:
-    if var.find('cant')!=-1: 
-        diccionario['Etiqueta']='Matricula regular'
+    diccionario.loc[diccionario['Columnas'].str.find('cant')!=-1,'Etiqueta']='Matricula regular'
+         
 
 
 
