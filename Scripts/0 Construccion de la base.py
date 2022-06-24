@@ -15,9 +15,9 @@ work =  Path(r'D:\Trabajo\AITeacherAllocation')
 
 #Cargo las bases de insumos
 racio_2019 = pd.read_csv(work/r'Raw Data\Base 2019.csv')
-racio_2020 = pd.read_stata(work/r'Raw Data\Racio 2020.dta')
-racio_2021 = pd.read_stata(work/r'Raw Data\Racio 2021.dta')
-padron_gg1 = pd.read_stata(work/r'Raw Data\Padron GG1.dta')
+racio_2020 = pd.read_stata(work/r'Raw Data\\Racio 2020.dta')
+racio_2021 = pd.read_stata(work/r'Raw Data\\Racio 2021.dta')
+padron_gg1 = pd.read_stata(work/r'Raw Data\\Padron GG1.dta')
 #Renombro alguans variables
 racio_2021.rename(columns={'numeroseccion':'secciones_necesarias'}, inplace=True)
 
@@ -160,6 +160,9 @@ for mat in matricula:
         my_string = 'Alumno regulares - cuna menor a 12 meses'
         labels_matricula.append(my_string)
         
+cant6 (t)
+inclu0 (t)
+
 
 # Inicial
     # 0-> <1 anio
@@ -212,17 +215,7 @@ matricula_dd = pd.DataFrame(dict_matricula.items(), columns=['Variable', 'Etique
 
 
 # 'bolsa_s', 'bolsa_n', 'secciones_necesarias_2019'
-
-
-
-
-# Crear un diccionario de manera eficiente
-    # Defino la lista de variables (divide y venceras)
-        # Matricula (x)
-        # Docentes ()
-        # Identificacion ()
-        
-    
+            
 # Diccionario
     #Resultados de la evaluacion
 # data_dictionary ={'doc_e':'Excedente - Numero de plazas de docente de aula',
