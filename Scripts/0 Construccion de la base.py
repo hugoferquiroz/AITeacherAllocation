@@ -41,7 +41,7 @@ def cargar_base(df,anio):
 
     """
     #Variables a usar
-    all_columns = df.columns.values.tolist()
+    all_columns = df.columns.tolist()
     
     #Datos de identificacion (salen del padron gg1)
     identificacion_padron = ['cod_mod','niv_mod', 'd_niv_mod','gestion','d_gestion','ges_dep','d_ges_dep','ubigeo',
@@ -91,23 +91,23 @@ def cargar_base(df,anio):
 
     lag = 0
     anios = [anio - i for i in [1,2,3,4]]
-    for anio in anios:
+    for lapso in anios:
       lag = lag + 1
-      df = df.rename(columns={f'cant0_alum_{anio}': f'cant0 (t-{lag})', 
-                              f'cant1_alum_{anio}': f'cant1 (t-{lag})',
-                              f'cant2_alum_{anio}': f'cant2 (t-{lag})', 
-                              f'cant3_alum_{anio}': f'cant3 (t-{lag})',
-                              f'cant4_alum_{anio}': f'cant4 (t-{lag})', 
-                              f'cant5_alum_{anio}': f'cant5 (t-{lag})', 
-                              f'cant6_alum_{anio}': f'cant6 (t-{lag})'})
+      df = df.rename(columns={f'cant0_alum_{lapso}': f'cant0 (t-{lag})', 
+                              f'cant1_alum_{lapso}': f'cant1 (t-{lag})',
+                              f'cant2_alum_{lapso}': f'cant2 (t-{lag})', 
+                              f'cant3_alum_{lapso}': f'cant3 (t-{lag})',
+                              f'cant4_alum_{lapso}': f'cant4 (t-{lag})', 
+                              f'cant5_alum_{lapso}': f'cant5 (t-{lag})', 
+                              f'cant6_alum_{lapso}': f'cant6 (t-{lag})'})
       
-      df = df.rename(columns={f'cant0_inclusivo_{anio}': f'inclu0 (t-{lag})', 
-                              f'cant1_inclusivo_{anio}': f'inclu1 (t-{lag})',
-                              f'cant2_inclusivo_{anio}': f'inclu2 (t-{lag})', 
-                              f'cant3_inclusivo_{anio}': f'inclu3 (t-{lag})',
-                              f'cant4_inclusivo_{anio}': f'inclu4 (t-{lag})', 
-                              f'cant5_inclusivo_{anio}': f'inclu5 (t-{lag})', 
-                              f'cant6_inclusivo_{anio}': f'inclu6 (t-{lag})'})
+      df = df.rename(columns={f'cant0_inclusivo_{lapso}': f'inclu0 (t-{lag})', 
+                              f'cant1_inclusivo_{lapso}': f'inclu1 (t-{lag})',
+                              f'cant2_inclusivo_{lapso}': f'inclu2 (t-{lag})', 
+                              f'cant3_inclusivo_{lapso}': f'inclu3 (t-{lag})',
+                              f'cant4_inclusivo_{lapso}': f'inclu4 (t-{lag})', 
+                              f'cant5_inclusivo_{lapso}': f'inclu5 (t-{lag})', 
+                              f'cant6_inclusivo_{lapso}': f'inclu6 (t-{lag})'})
     
     matricula_rename = [x for x in df.columns.to_list() if x.find(' (t')!=-1]
     
@@ -135,24 +135,31 @@ df.to_csv(work/r'Results\Base consolidada.csv')
 df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base consolidada.csv')
 
 
+col_2021=racio_2021.columns.to_list()
+col_2020=racio_2020.columns.to_list()
+col_2019=racio_2019.columns.to_list()
+
+
+
+
+
 
 
 # Build a data dictionary
-columnas_dict = df.columns.to_list()
-diccionario = pd.DataFrame(columnas_dict,columns=['Columnas'])
-diccionario['Etiqueta'] = ''
+excedentes = [x for x in racio_2019.columns.to_list() if x.find('exd')!=-1 and not x.find('tot_')!=-1]
+excedentes          
 
+def lista_exd(df, anio):
+    exd = [x for x in df.columns.to_list() if x.find('exd')!=-1 and x.endswith(f'{anio}') and not x.find('tot_')!=-1]
+    x = anio
+    return exd, x
 
-diccionario.loc[diccionario['Columnas'].str.find('cant')!=-1,'Etiqueta']='Matricula regular'
-
-
-for var in columnas_dict:
-    diccionario.loc[diccionario['Columnas'].str.find('cant')!=-1,'Etiqueta']='Matricula regular'
-         
-
-
+exd_2020, muermo = lista_exd(racio_2020,2020)
+exd_2020
+muermo
 
     # Matricula
+    
 matricula = [x for x in columnas_dict if x.startswith('cant') | x.startswith('inclu')]
 labels_matricula = []
 for mat in matricula:
@@ -162,8 +169,6 @@ for mat in matricula:
         
 cant6 (t)
 inclu0 (t)
-
-
 # Inicial
     # 0-> <1 anio
     # 1-> <2 anio
@@ -187,35 +192,10 @@ inclu0 (t)
     # 4 -> Cuarto de secundaria
     # 5 -> Quinto de secundaria
 
+    # Resultados del proceso de racionalizacion
 
 
-for i in matricula :
-    my_string = 'Matricula'
-    for anio in [2015,2016,2017,2018,2019,2020,2021,2022]:
-        if i == 'cant_inclusivo_{anio}': 
-            my_string = my_string + ' inclusivo total' + f'-{anio}'
-            labels_matricula.append(my_string)
-                
-        elif i == 'cant_total_{anio}': 
-            my_string = my_string + ' regular total' + f'-{anio}'
-            labels_matricula.append(my_string)
-
-        for grado in [0,1,2,3,4,5,6]:
-            
-            if (f'cant{grado}' in i) and ('alum' in i) and i.endswith(f'{anio}'):
-                my_string = my_string + ' regular' + f' {grado} grado/año' + f'-{anio}'
-                labels_matricula.append(my_string)
-                
-            elif (f'cant{grado}' in i) and ('inclusivo' in i) and i.endswith(f'{anio}'): 
-                my_string = my_string + ' inclusivo' + f' {grado} grado/año' + f'-{anio}'
-                labels_matricula.append(my_string)
-
-dict_matricula = dict(zip(matricula_short , labels_matricula))
-matricula_dd = pd.DataFrame(dict_matricula.items(), columns=['Variable', 'Etiqueta'] )
-
-
-# 'bolsa_s', 'bolsa_n', 'secciones_necesarias_2019'
-            
+    
 # Diccionario
     #Resultados de la evaluacion
 # data_dictionary ={'doc_e':'Excedente - Numero de plazas de docente de aula',
