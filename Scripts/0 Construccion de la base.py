@@ -135,19 +135,27 @@ df.to_csv(work/r'Results\Base consolidada.csv')
 df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base consolidada.csv')
 
 
-col_2021=racio_2021.columns.to_list()
-col_2020=racio_2020.columns.to_list()
-col_2019=racio_2019.columns.to_list()
-
-
-
 
 
 
 
 # Build a data dictionary
-excedentes = [x for x in racio_2019.columns.to_list() if x.find('exd')!=-1 and not x.find('tot_')!=-1]
-excedentes          
+all_columns = df.columns.to_list()
+    # Excedentes
+
+
+excedentes = [x for x in df.columns.to_list() if x.find('exd')!=-1 and not x.find('tot_')!=-1]
+exd = ['']*len(excedentes)
+exd_dic = dict(zip(excedentes,exd)) 
+ 
+
+# for x in ['dir','sub_dir','jer','doc','otro_doc','aux']:
+#     for y in ['2020','2021']:
+#         if x.starswith(f'{x}') and x.endswith(f'y'):
+#             print('docente de aula')
+
+
+
 
 def lista_exd(df, anio):
     exd = [x for x in df.columns.to_list() if x.find('exd')!=-1 and x.endswith(f'{anio}') and not x.find('tot_')!=-1]
