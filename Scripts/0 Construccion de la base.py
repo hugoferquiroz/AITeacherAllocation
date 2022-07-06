@@ -121,6 +121,8 @@ def cargar_base(df,anio):
     #Base consolidada   
     df_ok = pd.merge(racio_short,padron_gg1_short,on=['cod_mod'],how='left',validate='1:1')
     #Homogenizo las variables
+    for col in df_ok.columns:
+        df_ok.rename(columns={col:col.replace(f'_{anio}','')},inplace=True)
     df_ok['year'] = anio
     return df_ok
 
@@ -137,8 +139,6 @@ df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base co
 
 
 
-
-
 # Build a data dictionary
 all_columns = df.columns.to_list()
     # Excedentes
@@ -147,7 +147,9 @@ all_columns = df.columns.to_list()
 excedentes = [x for x in df.columns.to_list() if x.find('exd')!=-1 and not x.find('tot_')!=-1]
 exd = ['']*len(excedentes)
 exd_dic = dict(zip(excedentes,exd)) 
- 
+
+
+
 
 # for x in ['dir','sub_dir','jer','doc','otro_doc','aux']:
 #     for y in ['2020','2021']:
