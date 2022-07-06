@@ -142,13 +142,18 @@ df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base co
 # Build a data dictionary
 all_columns = df.columns.to_list()
     # Excedentes
-
-
 excedentes = [x for x in df.columns.to_list() if x.find('exd')!=-1 and not x.find('tot_')!=-1]
 exd = ['']*len(excedentes)
 exd_dic = dict(zip(excedentes,exd)) 
 
+data_dictionary ={'doc_e_n': 'Numero de plazas excedentes de docente de aula nombrado',
+                  'doc_e_c' : 'Numero de plazas de docente de aula vacante o contratado',
+                  }
 
+# orden de llenado: cargo, excedente, contratado/nombrado
+
+exd_dic
+len(all_columns)
 
 
 # for x in ['dir','sub_dir','jer','doc','otro_doc','aux']:
