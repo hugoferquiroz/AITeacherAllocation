@@ -68,7 +68,7 @@ def cargar_base(df,anio):
 
     pea_evaluada = []
     for cargo in ['dir','sub_dir','jer','doc','otro_doc','aux']:
-        for sit in ['nom','vac']:
+        for sit in ['n','c']:
             pea_evaluada.append(f'{cargo}_{sit}')    
     
     #Matricula     
