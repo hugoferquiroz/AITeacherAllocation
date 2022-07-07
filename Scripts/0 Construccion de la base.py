@@ -59,8 +59,8 @@ def cargar_base(df,anio):
     
     #PEA evaluada
     for cargo in ['dir','sub_dir']:
-        df[f'{cargo}_nom'] = df[f'{cargo}_des_org']+df[f'{cargo}_des_ev']
-        df[f'{cargo}_vac'] = df[f'{cargo}_des_ev']+df[f'{cargo}_enc_ev']+df[f'{cargo}_vac_ev']
+        df[f'{cargo}_n'] = df[f'{cargo}_des_org']+df[f'{cargo}_des_ev']
+        df[f'{cargo}_c'] = df[f'{cargo}_des_ev']+df[f'{cargo}_enc_ev']+df[f'{cargo}_vac_ev']
 	
     for cargo in ['jer','doc','otro_doc','aux']:
         df[f'{cargo}_n']=df[f'{cargo}_nom_org']+df[f'{cargo}_nom_ev']
