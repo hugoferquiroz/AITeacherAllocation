@@ -59,16 +59,16 @@ def cargar_base(df,anio):
     
     #PEA evaluada
     for cargo in ['dir','sub_dir']:
-        df[f'{cargo}_nom'] = df[f'{cargo}_des_org']+df[f'{cargo}_des_ev']
-        df[f'{cargo}_vac'] = df[f'{cargo}_des_ev']+df[f'{cargo}_enc_ev']+df[f'{cargo}_vac_ev']
+        df[f'{cargo}_n'] = df[f'{cargo}_des_org']+df[f'{cargo}_des_ev']
+        df[f'{cargo}_c'] = df[f'{cargo}_des_ev']+df[f'{cargo}_enc_ev']+df[f'{cargo}_vac_ev']
 	
     for cargo in ['jer','doc','otro_doc','aux']:
-        df[f'{cargo}_nom']=df[f'{cargo}_nom_org']+df[f'{cargo}_nom_ev']
-        df[f'{cargo}_vac']=df[f'{cargo}_con_org']+df[f'{cargo}_con_ev']+df[f'{cargo}_vac_org']+df[f'{cargo}_vac_ev']
+        df[f'{cargo}_n']=df[f'{cargo}_nom_org']+df[f'{cargo}_nom_ev']
+        df[f'{cargo}_c']=df[f'{cargo}_con_org']+df[f'{cargo}_con_ev']+df[f'{cargo}_vac_org']+df[f'{cargo}_vac_ev']
 
     pea_evaluada = []
     for cargo in ['dir','sub_dir','jer','doc','otro_doc','aux']:
-        for sit in ['nom','vac']:
+        for sit in ['n','c']:
             pea_evaluada.append(f'{cargo}_{sit}')    
     
     #Matricula     
@@ -144,12 +144,40 @@ all_columns = df.columns.to_list()
     # Excedentes
 excedentes = [x for x in df.columns.to_list() if x.find('exd')!=-1 and not x.find('tot_')!=-1]
 exd = ['']*len(excedentes)
-exd_dic = dict(zip(excedentes,exd)) 
+df_dd_exd = pd.DataFrame(list(zip(excedentes, exd)),columns =['Variable', 'Descripcion'])
 
-data_dictionary ={'doc_e_n': 'Numero de plazas excedentes de docente de aula nombrado',
-                  'doc_e_c' : 'Numero de plazas de docente de aula vacante o contratado',
+
+
+df_dd_exd['cargo']='docente de aula' if df_dd_exd['variable'].str.find('doc_aula')
+
+data_dictionary ={'doc_e_n': 'Numero de plazas de docente de aula excedentes nombrado',
+                  'doc_e_c' : 'Numero de plazas de docente de aula excedentes vacante o contratado',
                   }
 
+
+df_dd_exd.loc[df_dd_exd['Variable'].str.find('doc_aula')!=-1,'Descripcion']='docente de aula'
+df_dd_exd.loc[df_dd_exd['Variable'].str.find('dir')!=-1,'Descripcion']='director'
+df_dd_exd.loc[df_dd_exd['Variable'].str.find('sub_dir')!=-1,'Descripcion']='subdirector'
+    
+dict_cargos={'director':'director', 'doc_aula':'docente de aula'}
+dict_sit_lab={'_n':'nombrado', '_c':'contratado'}
+
+for k,v in dict_cargos.items():
+    print(k,'->',v)
+    df_dd_exd.loc[df_dd_exd['Variable'].str.find(f'{k}')!=-1,'Descripcion']=f'{v}'
+
+df_dd_exd
+
+'auxiliar':'auxiliar'
+'jerarquico':'jerarquico'
+'subdirector':'subdirector'
+'director':'director'
+'doc_aula':'docente de aula'
+
+'exd':'excedente'
+'_c':'contratado'
+'_n':'nombrado'}
+    
 # orden de llenado: cargo, excedente, contratado/nombrado
 
 exd_dic
