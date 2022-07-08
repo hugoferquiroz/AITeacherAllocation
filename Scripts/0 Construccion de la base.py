@@ -127,14 +127,22 @@ def cargar_base(df,anio):
         
     df_ok = df_ok.rename(columns={'doc_n':'doc_aula_n',
                                   'doc_c':'doc_aula_c',
-                                  'otro_doc_n':'doc_no_aula_n',
-                                  'otro_doc_c':'doc_no_aula_c',
+                                  'doc_no_aula_exd':'otro_doc_exd',
                                   'director_exd':'dir_exd',
                                   'subdirector_exd':'sub_dir_exd',
                                   'jerarquico_exd':'jer_exd',
-                                  'auxiliar_exd':'aux_exd'})
+                                  'auxiliar_exd':'aux_exd',
+                                  'req_dir':'dir_req',
+                                  'req_sub':'sub_dir_req',
+                                  'req_jer':'jer_req',
+                                  'req_prof':'doc_aula_req',
+                                  'req_aux':'aux_req',
+                                  'req_fisica':'fisica_req',
+                                  'req_aip':'aip_req'})
     df_ok['year'] = anio
     return df_ok
+
+
 
 
 #Consolido la base
@@ -151,100 +159,66 @@ df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base co
 
 # Build a data dictionary
 all_columns = df.columns.to_list()
-    # Excedentes
-excedentes = [x for x in df.columns.to_list() if x.find('exd')!=-1 and not x.find('tot_')!=-1]
-exd = ['']*len(excedentes)
-df_dd_exd = pd.DataFrame(list(zip(excedentes, exd)),columns =['Variable', 'Descripcion'])
-
-
-dict_cargos={'doc_aula':'docente de aula','doc_no_aula':'otro docente', 
+    # cargos
+cargos=[x for x in df.columns.to_list() if x.find('doc_aula')!=-1 or 
+                                            x.find('otro_doc')!=-1 or
+                                            x.find('dir')!=-1 or
+                                            x.find('sub_dir')!=-1 or
+                                            x.find('jer')!=-1 or
+                                            x.find('aip')!=-1 or
+                                            x.find('fisica')!=-1 or
+                                            x.find('aux')!=-1]
+pea = ['']*len(cargos)
+df_dd_cargos = pd.DataFrame(list(zip(cargos, pea)),columns =['Variable', 'Descripcion'])                                          
+dict_cargos={'doc_aula':'docente de aula','otro_doc':'otro docente', 
              'dir':'director','sub_dir':'subdirector','jer':'jerarquico',
-             'aux':'auxiliar'}
+             'aux':'auxiliar','aip':'docente AIP','fisica':'docente de educacion fisica'}
 dict_contrato={'_n':'nombrado', '_c':'contratado'}
-
+dict_estado={'_exd':'excedente','_req':'requerimiento'}
 for k,v in dict_cargos.items():
-    df_dd_exd.loc[df_dd_exd['Variable'].str.find(f'{k}')!=-1,'cargos']=f'{v}'
-
+    df_dd_cargos.loc[df_dd_cargos['Variable'].str.find(f'{k}')!=-1,'cargos']=f'{v}'
 for k,v in dict_contrato.items():
-    df_dd_exd.loc[df_dd_exd['Variable'].str.find(f'{k}')!=-1,'contrato']=f'{v}'
-    
-df_dd_exd
+    df_dd_cargos.loc[df_dd_cargos['Variable'].str.find(f'{k}')!=-1,'contrato']=f'{v}'
+for k,v in dict_estado.items():
+    df_dd_cargos.loc[df_dd_cargos['Variable'].str.find(f'{k}')!=-1,'estado']=f'- {v}'    
+for x in ['cargos','contrato','estado']:
+    df_dd_cargos.loc[df_dd_cargos[f'{x}'].str.find('NaN')!=-1,f'{x}']= ''
+df_dd_cargos['Descripcion']=df_dd_cargos['cargos']+' '+df_dd_cargos['contrato'] +df_dd_cargos['estado']  
+df_dd_cargos['Descripcion']
+df_dd_cargos=df_dd_cargos[['Variable','Descripcion']]
 
-'auxiliar':'auxiliar'
-'jerarquico':'jerarquico'
-'subdirector':'subdirector'
-'director':'director'
-'doc_aula':'docente de aula'
+    # otras variables
+dict_otros={'cod_mod':'codigo modular (identificaador del servicio educativo)',
+'codlocal':'codigo local (identificaador del local)',
+'usuario_minedu':'usuario que realizo la evaluacion',
+'bolsa_nexus':'bolsa de horas registrada en nexus',
+'bolsa_sira':'bolsa de horas registrada en sira (resultado del proceso)',
+'secciones_necesarias':'secciones necesarias (resultado del proceso)',
+'niv_mod':'codigo de nivel',
+'d_niv_mod':'descripcion del nivel',
+'gestion':'codigo de gestion',
+'d_gestion':'descripcion de gestion',
+'ges_dep':'codigo de dependencia',
+'d_ges_dep':'descripcion de la dependencia',
+'ubigeo':'ubigeo',
+'d_dpto':'departamento',
+'d_prov':'provincia',
+'d_dist':'distrito',
+'d_region':'direccion regional de educacion (DRE)',
+'codooii':'codigo de ugel (identificador de ugel)',
+'d_dreugel':'descripcion de la ugel',
+'nlat_ie':'latitud del local educativo',
+'nlong_ie':'longitud del local educativo',
+'estado':'codigo del estado del servicio educativo',
+'d_estado':'descripcion del estado del servicio educativo',
+'region':'region',
+'tipo_entidad':'entidades ejecutoras u operativas',
+'jec':'servicio educativo con jornada escolar completa(jec)',
+'ruralidad':'gradiente de ruralidad del servicio educativo',
+'vraem':'servicio educativo localizado en el valle del rio ene-mantaro',
+'frontera':'servicio educativo ubicado en la frontera',
+'bilingue':'servicio educativo con educacion bilingue',
+'caracteristica':'caracteristica del servicio educativo (unidocente,multigrado o polidocente)',
+'year':'año de evaluacion'}
+df_dd_otros=pd.DataFrame(list(zip(dict_otros.keys(),dict_otros.values())),columns =['Variable', 'Descripcion'])
 
-'exd':'excedente'
-'_c':'contratado'
-'_n':'nombrado'}
-    
-# orden de llenado: cargo, excedente, contratado/nombrado
-
-exd_dic
-len(all_columns)
-
-
-# for x in ['dir','sub_dir','jer','doc','otro_doc','aux']:
-#     for y in ['2020','2021']:
-#         if x.starswith(f'{x}') and x.endswith(f'y'):
-#             print('docente de aula')
-
-
-
-
-def lista_exd(df, anio):
-    exd = [x for x in df.columns.to_list() if x.find('exd')!=-1 and x.endswith(f'{anio}') and not x.find('tot_')!=-1]
-    x = anio
-    return exd, x
-
-exd_2020, muermo = lista_exd(racio_2020,2020)
-exd_2020
-muermo
-
-    # Matricula
-    
-matricula = [x for x in columnas_dict if x.startswith('cant') | x.startswith('inclu')]
-labels_matricula = []
-for mat in matricula:
-    if (mat.find(f't{0}')!=-1) & (mat.find('cant')!=-1):
-        my_string = 'Alumno regulares - cuna menor a 12 meses'
-        labels_matricula.append(my_string)
-        
-cant6 (t)
-inclu0 (t)
-# Inicial
-    # 0-> <1 anio
-    # 1-> <2 anio
-    # 2-> <3 anio
-    # 3-> 3 anios inicial
-    # 4-> 4 anios inicial
-    # 5-> 5 anios inicial
-
-# Primaria
-    # 1 -> Primero de primaria
-    # 2 -> Segundo de primaria   
-    # 3 -> Tercero de primaria   
-    # 4 -> Cuarto de primaria   
-    # 5 -> Quinto de primaria   
-    # 6 -> Sexto de primaria   
-
-# Secundaria
-    # 1 -> Primero de secundaria
-    # 2 -> Segundo de secundaria
-    # 3 -> Tercero de secundaria
-    # 4 -> Cuarto de secundaria
-    # 5 -> Quinto de secundaria
-
-    # Resultados del proceso de racionalizacion
-
-
-    
-# Diccionario
-    #Resultados de la evaluacion
-# data_dictionary ={'doc_e':'Excedente - Numero de plazas de docente de aula',
-#                   'doc_e_n': 'Excedente - Numero de plazas de docente de aula nombrado',
-#                   'doc_e_c' : 'Excedente - Numero de plazas de docente de aula vacante o contratado',
-#                   'doc_req': 'Requerimiento - Numero de plazas de docente de aula',
-#                   'secciones_necesarias': 'Secciones necesarias',
