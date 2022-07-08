@@ -15,6 +15,7 @@ work =  Path(r'D:\Trabajo\AITeacherAllocation')
 
 #Cargo las bases de insumos
 racio_2019 = pd.read_csv(work/r'Raw Data\Base 2019.csv')
+
 racio_2020 = pd.read_stata(work/r'Raw Data\\Racio 2020.dta')
 racio_2021 = pd.read_stata(work/r'Raw Data\\Racio 2021.dta')
 padron_gg1 = pd.read_stata(work/r'Raw Data\\Padron GG1.dta')
@@ -123,6 +124,15 @@ def cargar_base(df,anio):
     #Homogenizo las variables
     for col in df_ok.columns:
         df_ok.rename(columns={col:col.replace(f'_{anio}','')},inplace=True)
+        
+    df_ok = df_ok.rename(columns={'doc_n':'doc_aula_n',
+                                  'doc_c':'doc_aula_c',
+                                  'otro_doc_n':'doc_no_aula_n',
+                                  'otro_doc_c':'doc_no_aula_c',
+                                  'director_exd':'dir_exd',
+                                  'subdirector_exd':'sub_dir_exd',
+                                  'jerarquico_exd':'jer_exd',
+                                  'auxiliar_exd':'aux_exd'})
     df_ok['year'] = anio
     return df_ok
 
@@ -136,7 +146,7 @@ df = df.append(racio_2019)
 df.to_csv(work/r'Results\Base consolidada.csv')
 df.to_csv('D:\OneDrive\Trabajo\Minedu\AI teacher allocation data\Results\Base consolidada.csv')
 
-
+    
 
 
 # Build a data dictionary
@@ -147,25 +157,17 @@ exd = ['']*len(excedentes)
 df_dd_exd = pd.DataFrame(list(zip(excedentes, exd)),columns =['Variable', 'Descripcion'])
 
 
-
-df_dd_exd['cargo']='docente de aula' if df_dd_exd['variable'].str.find('doc_aula')
-
-data_dictionary ={'doc_e_n': 'Numero de plazas de docente de aula excedentes nombrado',
-                  'doc_e_c' : 'Numero de plazas de docente de aula excedentes vacante o contratado',
-                  }
-
-
-df_dd_exd.loc[df_dd_exd['Variable'].str.find('doc_aula')!=-1,'Descripcion']='docente de aula'
-df_dd_exd.loc[df_dd_exd['Variable'].str.find('dir')!=-1,'Descripcion']='director'
-df_dd_exd.loc[df_dd_exd['Variable'].str.find('sub_dir')!=-1,'Descripcion']='subdirector'
-    
-dict_cargos={'director':'director', 'doc_aula':'docente de aula'}
-dict_sit_lab={'_n':'nombrado', '_c':'contratado'}
+dict_cargos={'doc_aula':'docente de aula','doc_no_aula':'otro docente', 
+             'dir':'director','sub_dir':'subdirector','jer':'jerarquico',
+             'aux':'auxiliar'}
+dict_contrato={'_n':'nombrado', '_c':'contratado'}
 
 for k,v in dict_cargos.items():
-    print(k,'->',v)
-    df_dd_exd.loc[df_dd_exd['Variable'].str.find(f'{k}')!=-1,'Descripcion']=f'{v}'
+    df_dd_exd.loc[df_dd_exd['Variable'].str.find(f'{k}')!=-1,'cargos']=f'{v}'
 
+for k,v in dict_contrato.items():
+    df_dd_exd.loc[df_dd_exd['Variable'].str.find(f'{k}')!=-1,'contrato']=f'{v}'
+    
 df_dd_exd
 
 'auxiliar':'auxiliar'
