@@ -8,6 +8,9 @@ Created on Mon Mar 28 17:36:02 2022
 #Importar las librerias
 import pandas as pd
 from pathlib import Path
+from openpyxl import load_workbook
+from openpyxl.styles import Font
+from openpyxl.styles import Alignment  
 pd.options.mode.chained_assignment = None
 
 #Configuro la direccion de trabajo
@@ -221,4 +224,87 @@ dict_otros={'cod_mod':'codigo modular (identificaador del servicio educativo)',
 'caracteristica':'caracteristica del servicio educativo (unidocente,multigrado o polidocente)',
 'year':'año de evaluacion'}
 df_dd_otros=pd.DataFrame(list(zip(dict_otros.keys(),dict_otros.values())),columns =['Variable', 'Descripcion'])
+df_dd_descripcion = df_dd_otros.append(df_dd_cargos)
+def make_my_data_dictionary(dataFrame):
+    """
+    Parameters
+    ----------
+    dataFrame : TYPE: DataFrame
+        El DataFrame que genera el diccionario de datos
 
+    Returns
+    -------
+    df_DD : TYPE: DataFrame
+        Diccionario de datos
+    """
+    col_ = list(df_dd_descripcion['Variable'])
+    df_DataDict = {}
+
+    for col in col_:
+            df_DataDict[col] = {
+                           'Tipo': str(dataFrame.dtypes[col]),
+                           'Longitud': len(dataFrame[col]),
+                           'Missing': sum(dataFrame[col].isna()),
+                           'Tamaño(memoria)': dataFrame.memory_usage()[col],
+                            }
+    df_DD = pd.DataFrame(df_DataDict).transpose()   
+    df_DD.reset_index(inplace=True)
+    df_DD.rename(columns={'index':'Variable'},inplace=True)
+    return df_DD
+
+df_dd = make_my_data_dictionary(df)
+df_dd = pd.merge(left=df_dd,right=df_dd_descripcion)
+df_dd.to_excel(work/r'Documents\diccionario de datos.xlsx',sheet_name='principal',index=False)
+
+    #matricula
+workbook = load_workbook(filename=work/r'Documents\diccionario de datos.xlsx')
+ws = workbook.create_sheet(title='matricula')
+for x in ['A','D','G']:
+    #Encabezado
+    ws[f'{x}1'].alignment = Alignment(horizontal='center', vertical='center')
+    ws[f'{x}1']='Nivel'
+    ws[f'{x}1'].font = Font(bold=True)
+    ws.merge_cells(f'{x}2:{x}7')
+    ws[f'{x}2'].alignment = Alignment(horizontal='center', vertical='center')    
+ws['A2']='Inicial'
+ws['D2']='Primaria'
+ws['G2']='Secundaria'
+for x in ['B','E','H']:
+    ws[f'{x}1']='Nomenclatura'
+    ws[f'{x}1'].font = Font(bold=True)
+    ws.alignment = Alignment(horizontal='center', vertical='center')
+for x in range(2,9):
+    ws[f'B{x}']=ws[f'E{x}']=ws[f'H{x}']=x-2
+
+for x in ['C','F','I']:
+    ws[f'{x}1']='Descripcion'
+    ws[f'{x}1'].font = Font(bold=True)
+    ws.alignment = Alignment(horizontal='center', vertical='center')
+#inicial
+ws['C2']='De 0 hasta 12 meses'
+ws['C3']='De 12 hasta 24 meses'
+ws['C4']='De 24 hasta 36 meses'
+ws['C5']='3 años'
+ws['C6']='4 años'
+ws['C7']='5 años'
+ws['C8']='No aplica'
+#primaria
+ws['F2']='No aplica'
+ws['F3']='Primero de primaria'
+ws['F4']='Segundo de primaria'
+ws['F5']='Tercero de primaria'
+ws['F6']='Cuarto de primaria'
+ws['F7']='Quinto de primaria'
+ws['F8']='Sexto de primaria'
+#secundaria
+ws['I2']='No aplica'
+ws['I3']='Primero de secundaria'
+ws['I4']='Segundo de secundaria'
+ws['I5']='Tercero de secundaria'
+ws['I6']='Cuarto de secundaria'
+ws['I7']='Quinto de secundaria'
+ws['I8']='No aplica'
+
+ws['A10'] = 'inclu: indica alumnos inclusivos'
+ws['A11'] = 'cant: indica alumnos regulares'
+workbook.save(work/r'Documents\diccionario de datos.xlsx')
