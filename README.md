@@ -44,3 +44,4 @@ For now, the scope of the project is for kindergarten and primary schools manage
 - Numpy
 - Sklearn
 - Path
+- Openpyxl
